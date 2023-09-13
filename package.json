@@ -1,0 +1,14 @@
+{
+  "name": "matrixanalysislibrary",
+  "version": "1.0.0",
+  "description": "Analyse a matrix",
+  "type": "module",
+  "main": "./dist/GameBoard.js",
+  "scripts": {
+    "start": "tsc && node dist/GameBoard.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
