@@ -36,7 +36,7 @@ export class MatrixAnalyzer{
     let longestSoFar
     for (const direction of searchDirections) {
       thisSide = this.#getMatchesInSpecifiedDirection(currentCell, direction[0])
-      oppositeSide = this.#getMatchesInSpecifiedDirection(currentCell, direction[0])
+      oppositeSide = this.#getMatchesInSpecifiedDirection(currentCell, direction[1])
       longestSoFar = [...thisSide, currentCell, ...oppositeSide]
       if (longestSoFar.length > longest.length) {
         longest = longestSoFar
@@ -48,15 +48,15 @@ export class MatrixAnalyzer{
   #getMatchesInSpecifiedDirection(currentCell:HTMLElement, direction:number[]):HTMLElement[] {
     const [dRow, dCol] = direction
     const signature = currentCell.innerText
-    let row = Number(currentCell.dataset.row)
-    let col = Number(currentCell.dataset.col)
+    // Get first neighbor in specified direction
+    let row = Number(currentCell.dataset.row) + dRow
+    let col = Number(currentCell.dataset.col) + dCol
     let matchingCells:HTMLElement[] = []
-    // const board = this.#gameboard.element.querySelectorAll('.cell')
     const board = this.#gameboard
     let length = 0;
     while (
-      row >= 0 && row < board.size.rows && // Should be board.rows
-      col >= 0 && col < board.size.columns && // Should be board.columns
+      row > 0 && row <= board.size.rows &&
+      col > 0 && col <= board.size.columns &&
       board.getCellElementValueRowCol(row,col) === signature
     ) {
       matchingCells.push(board.getCellElementRowCol(row,col))
