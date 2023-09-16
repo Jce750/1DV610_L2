@@ -1,12 +1,14 @@
-import { PositionRowColumn } from './PositionRowColumn.js'
-import { CellSizeWidthHeight } from './CellSizeWidthHeight.js'
+import { PositionRowColumn } from './PositionRowColumn'
+import { CellSizeWidthHeight } from './CellSizeWidthHeight'
 
 export class Cell {
-  #position: PositionRowColumn = new PositionRowColumn(0,0)
+  #position: PositionRowColumn = new PositionRowColumn(1,1)
   #cellSize: CellSizeWidthHeight = new CellSizeWidthHeight(10,10)
   #cellElement: HTMLElement = document.createElement('div')
 
   constructor(position: PositionRowColumn, cellSize: CellSizeWidthHeight){
+    console.log('Cell constructor')
+    console.log(position)
     this.position = position
     this.cellSize = cellSize
     this.#cellElement = this.#createCell()

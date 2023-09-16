@@ -1,7 +1,16 @@
+/**
+ * A class to represent a position in a 2D array.
+ * Position is one-based, not zero-based.
+ *
+ */
+import { validator } from './Validator'
 export class PositionRowColumn {
-  #row:number = 0
-  #column:number = 0
-  constructor(public rowIndex:number, public columnIndex:number){
+  #row:number = 1
+  #column:number = 1
+  constructor(public rowIndex:number = 1, public columnIndex:number = 1){
+    console.log('PositionRowColumn constructor')
+    console.log(rowIndex, columnIndex)
+    new validator().isRowColumnFiniteIntegers(rowIndex,columnIndex)
     this.row = rowIndex
     this.column = columnIndex
   }

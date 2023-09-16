@@ -108,7 +108,7 @@
   },
   "include": [
     "src/**/*.ts"
-  ],
+, "src/__tests__/testCellSizeWidthHeight", "src/__tests__/testRangeMinMax", "src/__tests__/testMatrixSizeRowsCols.ts"  ],
   "exclude": [
     "node_modules"
   ]

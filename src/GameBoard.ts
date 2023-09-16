@@ -3,6 +3,8 @@ import { CellSizeWidthHeight } from './CellSizeWidthHeight.js'
 import { Cell } from './Cell.js'
 import { PositionRowColumn } from './PositionRowColumn.js'
 import { MatrixAnalyzer } from './MatrixAnalyzer.js'
+import { RangeMinMax } from './RangeMinMax.js'
+import { Limits } from './Limits.js'
 
 export class GameBoard{
 
@@ -11,7 +13,9 @@ export class GameBoard{
   #gameBoardElement:HTMLElement = document.createElement('div')
 
   constructor(rows:number,columns:number){
-    this.#setsize(new MatrixSizeRowsCols(rows,columns))
+    new RangeMinMax(1, Limits.MaxRows).isValueInRange(rows)
+    new RangeMinMax(1,Limits.MaxColumns).isValueInRange(columns)
+    this.#matrixSize = new MatrixSizeRowsCols(rows,columns)
     this.#gameBoardElement = this.#createGameBoardElement()
   }
 
@@ -44,12 +48,6 @@ export class GameBoard{
 
   getCellElementValueRowCol(row:number,col:number):string{
     return this.getCellElementRowCol(row,col).innerText
-  }
-
-  #setsize(matrixSize:MatrixSizeRowsCols){
-    if(matrixSize.isValidRange(1,50)){
-    this.#matrixSize = matrixSize
-    }
   }
 
   test(test:string):void{
