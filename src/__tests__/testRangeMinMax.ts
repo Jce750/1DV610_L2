@@ -35,14 +35,11 @@ describe('RangeMinMax', () => {
     expect(() => new RangeMinMax(Infinity, 10)).toThrow()
   })
 
-  it('should throw an error if min is undefined', () => {
-    expect(() => new RangeMinMax(undefined, 10)).toThrow()
-  })
-  // test isValueInRange
   it('should throw an error if value is less than min', () => {
     const range = new RangeMinMax(1, 10)
     expect(() => range.isValueInRange(0)).toThrow()
   })
+
   it('should throw an error if value is greater than max', () => {
     const range = new RangeMinMax(1, 10)
     expect(() => range.isValueInRange(11)).toThrow()

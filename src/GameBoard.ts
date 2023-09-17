@@ -31,7 +31,7 @@ export class GameBoard{
     return this.#gameBoardElement
   }
 
-  get cellElements(){
+  get cellElements():NodeListOf<Element>{
     return this.#gameBoardElement.querySelectorAll('.cell')
   }
 
