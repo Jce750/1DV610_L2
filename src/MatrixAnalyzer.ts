@@ -42,6 +42,7 @@ export class MatrixAnalyzer{
         longest = longestSoFar
       }
     }
+    console.log(`longest: ${longest.length}`)
     return longest;
   }
 
@@ -50,19 +51,25 @@ export class MatrixAnalyzer{
     const signature = currentCell.innerText
     // Get first neighbor in specified direction
     let row = Number(currentCell.dataset.row) + dRow
+    console.log(`Check dir: ${direction}`)
     let col = Number(currentCell.dataset.col) + dCol
+    console.log(`pos2compare: ${row},${col}`)
+    
     let matchingCells:HTMLElement[] = []
     const board = this.#gameboard
     let length = 0;
     while (
-      row > 0 && row <= board.size.rows &&
-      col > 0 && col <= board.size.columns &&
+      row > 0 && row <= board.size.rowsSize &&
+      col > 0 && col <= board.size.columnsSize &&
       board.getCellElementValueRowCol(row,col) === signature
     ) {
+      console.log(`sig: ${signature} = ${board.getCellElementValueRowCol(row,col)}`)
+      console.log(`push row: ${row}, ${col}`)
       matchingCells.push(board.getCellElementRowCol(row,col))
       row += dRow;
       col += dCol;
     }
+    console.log(`No match for: ${signature} at ${row},${col}`)
     return matchingCells;
   }
 }

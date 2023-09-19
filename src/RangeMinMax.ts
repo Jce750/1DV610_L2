@@ -21,7 +21,7 @@ export class RangeMinMax{
     return this.#max;
   }
 
-  #validateInput(min: number, max: number){
+  #validateInput(min: number, max: number):void{
     if(!Number.isFinite(min) || !Number.isFinite(max)){
       throw new Error('min and max must be finite numbers');
     }
@@ -36,9 +36,11 @@ export class RangeMinMax{
     }
   }
 
-  isValueInRange(value: number){
+  checkValueInRange(value: number):boolean{
     if(value < this.min || value > this.max){
+      console.log(`inRange: ${value} returns false`)
       throw new Error(`value must be between ${this.min} and ${this.max}`);
     }
+    return true;
   }
 }

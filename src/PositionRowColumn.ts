@@ -8,8 +8,6 @@ export class PositionRowColumn {
   #row:number = 1
   #column:number = 1
   constructor(public rowIndex:number = 1, public columnIndex:number = 1){
-    console.log('PositionRowColumn constructor')
-    console.log(rowIndex, columnIndex)
     new validator().isRowColumnFiniteIntegers(rowIndex,columnIndex)
     this.row = rowIndex
     this.column = columnIndex

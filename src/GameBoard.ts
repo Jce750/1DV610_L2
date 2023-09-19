@@ -1,21 +1,22 @@
-import { MatrixSizeRowsCols } from './MatrixSizeRowsCols.js'
-import { CellSizeWidthHeight } from './CellSizeWidthHeight.js'
-import { Cell } from './Cell.js'
-import { PositionRowColumn } from './PositionRowColumn.js'
-import { MatrixAnalyzer } from './MatrixAnalyzer.js'
-import { RangeMinMax } from './RangeMinMax.js'
-import { Limits } from './Limits.js'
+import { MatrixSizeRowsCols } from './MatrixSizeRowsCols'
+import { CellSizeWidthHeight } from './CellSizeWidthHeight'
+import { Cell } from './Cell'
+import { PositionRowColumn } from './PositionRowColumn'
+import { MatrixAnalyzer } from './MatrixAnalyzer'
+import { RangeMinMax } from './RangeMinMax'
+import { Limits } from './Limits'
 
 export class GameBoard{
 
-  #matrixSize:MatrixSizeRowsCols = new MatrixSizeRowsCols(0,0)
-  #cellSize:CellSizeWidthHeight = new CellSizeWidthHeight(10,10)
+  #matrixSize:MatrixSizeRowsCols
+  #cellSize:CellSizeWidthHeight
   #gameBoardElement:HTMLElement = document.createElement('div')
 
   constructor(rows:number,columns:number){
-    new RangeMinMax(1, Limits.MaxRows).isValueInRange(rows)
-    new RangeMinMax(1,Limits.MaxColumns).isValueInRange(columns)
+    new RangeMinMax(1, Limits.MaxRows).checkValueInRange(rows)
+    new RangeMinMax(1,Limits.MaxColumns).checkValueInRange(columns)
     this.#matrixSize = new MatrixSizeRowsCols(rows,columns)
+    this.#cellSize = new CellSizeWidthHeight(10,10)
     this.#gameBoardElement = this.#createGameBoardElement()
   }
 
@@ -36,7 +37,7 @@ export class GameBoard{
   }
 
   getCellElementRowCol(row:number,col:number):HTMLElement{
-    if (row < 1 || row > this.#matrixSize.rows || col < 1 || col > this.#matrixSize.columns) {
+    if (row < 1 || row > this.#matrixSize.rowsSize || col < 1 || col > this.#matrixSize.columnsSize) {
       throw new Error('row or column out of range')
     }
     let element = this.#gameBoardElement.querySelector(`[data-row="${row}"][data-col="${col}"]`)
@@ -57,7 +58,7 @@ export class GameBoard{
   #createGameBoardElement():HTMLElement {
     const gameBoardElement = document.createElement('div')
     gameBoardElement.classList.add('gameboard')
-    for (let row = 1; row <= this.#matrixSize.rows; row++) {
+    for (let row = 1; row <= this.#matrixSize.rowsSize; row++) {
       gameBoardElement.appendChild(this.#createRowOfCells(row))
     }
     return gameBoardElement
@@ -65,7 +66,7 @@ export class GameBoard{
 
   #createRowOfCells (row:number):HTMLElement {
     const rowElement = document.createElement('div')
-    for (let col = 1; col <= this.#matrixSize.columns; col++) {
+    for (let col = 1; col <= this.#matrixSize.columnsSize; col++) {
       const cell = this.#createCell(new PositionRowColumn(row,col))
       rowElement.appendChild(cell.CellElement)
     }
@@ -77,7 +78,7 @@ export class GameBoard{
     return cell
   }
 
-  addclickEventToCells(cellElements:HTMLCollection, onclick: (event: MouseEvent) => void):void {
+  addclickEventToCells(cellElements:NodeListOf<Element>, onclick: (event: MouseEvent) => void):void {
     if (typeof onclick !== 'function') {
       throw new Error('onclick must be a function')
     }

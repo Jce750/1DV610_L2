@@ -8,10 +8,6 @@
     "start": "tsc && node dist/GameBoard.js",
     "test": "jest"
   },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",

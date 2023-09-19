@@ -5,7 +5,7 @@ import { validator } from "./Validator"
 export class MatrixSizeRowsCols {
   #rows:number = 5
   #columns:number = 5
-  constructor(public rows:number = 5,public columns:number = 5){
+  constructor(rows:number = 5, columns:number = 5){
     new validator().isRowColumnFiniteIntegers(rows,columns)
     this.rowsSize = rows
     this.columnsSize = columns

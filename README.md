@@ -6,6 +6,9 @@ at:
 The main implementation can be found in:
   /src/js/components/x-tictactoe/tictactoe.js
 
+In general it is good to know that the librarys intended use is to create a rectangular 2D game board object. It consists of equally sized rectangular cells. The cells can have a click function and a text content. It is meant to be like a controller for a HTML game board-element and game.
+It has a game analysis tool that can evaluate game-state.
+
 ## Installation
 In your library-folder, open a command prompt.
 To download a copy of the library run:

@@ -37,12 +37,12 @@ describe('RangeMinMax', () => {
 
   it('should throw an error if value is less than min', () => {
     const range = new RangeMinMax(1, 10)
-    expect(() => range.isValueInRange(0)).toThrow()
+    expect(() => range.checkValueInRange(0)).toThrow()
   })
 
   it('should throw an error if value is greater than max', () => {
     const range = new RangeMinMax(1, 10)
-    expect(() => range.isValueInRange(11)).toThrow()
+    expect(() => range.checkValueInRange(11)).toThrow()
   })
 
 })

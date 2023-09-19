@@ -7,8 +7,6 @@ export class Cell {
   #cellElement: HTMLElement = document.createElement('div')
 
   constructor(position: PositionRowColumn, cellSize: CellSizeWidthHeight){
-    console.log('Cell constructor')
-    console.log(position)
     this.position = position
     this.cellSize = cellSize
     this.#cellElement = this.#createCell()

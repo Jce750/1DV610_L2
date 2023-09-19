@@ -3,8 +3,8 @@ import { MatrixSizeRowsCols } from '../MatrixSizeRowsCols' // Adjust the import 
 describe('MatrixSizeRowsCols', () => {
   it('should correctly set row and column values', () => {
     const size = new MatrixSizeRowsCols(1, 10)
-    expect(size.rows).toBe(1)
-    expect(size.columns).toBe(10)
+    expect(size.rowsSize).toBe(1)
+    expect(size.columnsSize).toBe(10)
   })
 
   it('should throw an error if row or column is not a number', () => {
