@@ -35,6 +35,37 @@ To replicate these tests, run the Jest test suite in the project where the `Cell
 | Width or Height not an integer          | Instantiate a new `CellSizeWidthHeight` object with a non-integer value for width or height and expect an error | Passed      |
 | Width or Height not finite              | Instantiate a new `CellSizeWidthHeight` object with `Infinity` for width or height and expect an error     | Passed      |
 
+# Test Report for GameBoard Module
+
+## Summary
+
+The `GameBoard` module has been tested using Jest with the jsdom environment. The tests cover various functionalities such as gameboard creation, cell size, and cell interactions. The tests also include the use of a mock function for handling click events.
+
+## Test Procedure
+
+To replicate these tests, run the Jest test suite in the project where the `GameBoard` module resides. The test file contains a `describe` block that initializes the necessary objects and runs multiple `it` blocks to perform the tests.
+
+## Test Results
+
+| What has been tested                                          | How it has been tested                                                                                               | Test Result |
+|---------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|-------------|
+| GameBoard object creation                                     | Instantiate a new `GameBoard` object and check its row and column sizes                                              | Passed      |
+| Error handling for row size                                    | Attempt to create a `GameBoard` object with rows less than 1                                                         | Passed      |
+| Cell size                                                     | Check if the `cellSize` properties of the `GameBoard` object are correctly set                                       | Passed      |
+| GameBoard element                                              | Check if the `GameBoard` object contains an HTML element                                                             | Passed      |
+| Number of cells                                                | Count the number of cell elements in the gameboard                                                                   | Passed      |
+| Cell element retrieval by row and column                       | Retrieve a cell element by specifying its row and column                                                             | Passed      |
+| Error handling for row retrieval                               | Attempt to retrieve a cell element with row less than 1                                                              | Passed      |
+| Cell element value retrieval                                   | Retrieve the value of a cell element by specifying its row and column                                                | Passed      |
+| Click event count                                              | Count the number of times cells have been clicked                                                                    | Passed      |
+| Longest line of matching cells                                 | Check the longest line of cells that match the value of a clicked cell                                               | Passed      |
+| Longest line of matching cells (middle addition)               | Check the longest line of cells that match the value of a clicked cell, even when the cell is added in the middle     | Passed      |
+| Longest diagonal line of matching cells                        | Check the longest diagonal line of cells that match the value of a clicked cell                                      | Passed      |
+| Longest line with different values                             | Check the longest line of cells that match the value of a clicked cell, even when one cell has a different value     | Passed      |
+| Longest line with multiple directions                          | Check the longest line of cells that match the value of a clicked cell, considering multiple directions              | Passed      |
+| Longest line with different cell values                        | Check the longest line of cells that match the value of a clicked cell, even when other cells have different values  | Passed      |
+
+
 
 # Test Report for MatrixSizeRowsCols Module
 

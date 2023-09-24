@@ -12,9 +12,9 @@ describe('CellSizeWidthHeight', () => {
     expect(() => new CellSizeWidthHeight(10, NaN)).toThrow()
   })
 
-  it('should throw an error if width or height is not greater than 0', () => {
-    expect(() => new CellSizeWidthHeight(0, 10)).toThrow()
-    expect(() => new CellSizeWidthHeight(10, 0)).toThrow()
+  it('should throw an error if width or height is less than 0', () => {
+    expect(() => new CellSizeWidthHeight(-1, 10)).toThrow()
+    expect(() => new CellSizeWidthHeight(10, -1)).toThrow()
   })
 
   it('should throw an error if width or height is not an integer', () => {

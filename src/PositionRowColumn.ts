@@ -3,12 +3,13 @@
  * Position is one-based, not zero-based.
  *
  */
-import { validator } from './Validator'
+import { validator } from './Validator.js'
 export class PositionRowColumn {
   #row:number = 1
   #column:number = 1
   constructor(public rowIndex:number = 1, public columnIndex:number = 1){
-    new validator().isRowColumnFiniteIntegers(rowIndex,columnIndex)
+    new validator(rowIndex).isPositive().isFinite().isInteger()
+    new validator(columnIndex).isPositive().isFinite().isInteger()
     this.row = rowIndex
     this.column = columnIndex
   }

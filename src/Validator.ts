@@ -1,13 +1,29 @@
 export class validator{
-  isRowColumnFiniteIntegers(row:number, column:number){
-    if(!Number.isFinite(row) || !Number.isFinite(column)){
-      throw new Error('row and column must be finite numbers')
+
+  private number:number
+
+  constructor(number:number){
+    this.number = number
+  }
+
+  isFinite(){
+    if(!Number.isFinite(this.number)){
+      throw new Error('number must be finite')
     }
-    if(row <= 0 || column <= 0){
-      throw new Error('row and column must be greater than 0')
+    return this
+  }
+
+  isInteger(){
+    if(!Number.isInteger(this.number)){
+      throw new Error('number must be an integer')
     }
-    if(!Number.isInteger(row) || !Number.isInteger(column)){
-      throw new Error('row and column must be integers')
+    return this
+  }
+
+  isPositive(){
+    if(this.number < 0){
+      throw new Error('number must be positive')
     }
+    return this
   }
 }

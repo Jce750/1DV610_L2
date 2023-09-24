@@ -1,57 +1,87 @@
-tabellreflektioner för kap 2 med fem namn
-kort reflektion för hela kap 2
-tabellreflektioner för kap 3 med fem funktioner
-kort reflektion för hela kap 3
-Reflektion om kodkvalitet mer generellt
-
 # Reflektioner kodkvalitet
+[Ref Clean Code av Robert C. Martin]
 
 ## Reflektioner kap 2
 
 | Namn och förklaring | Reflektion och regler från Clean Code |
 | ------------------- | ------------------------------------- |
-| getCellElementRowCol:  Kanske den här skulle ha hetat getCellElementAtRowCol för att undvika desinformation. Det är heller inte självklart att man får ett HTMLelement. tanken var att hinta om vilka argumenten som krävs men kan lätt missförstås som att det är ett returvärde eller typ. | Vi bör självklart undvika vilseledande och dubbeltydiga namn och förkortningar |
-| getLongestCellLineOfValueMatchIntersectingCell: Det här är det längsta namnet jag fick till. Det är också det namn jag lagt mest möda på för att få till. Den är omdöpt hundra gånger. Den största svårigheten var att få fram intentionen utan att förstöra läsbarheten. Jag tror jag har misslyckats kapitalt. jag vill säga get longest line of cells that matches the value of the intersected cell in question. jag skulle också vilja nämna att den tittar i horisontellt, vertikalt, och diagonalt.                    | A name of a method, class or variable should say why it exists, what it does, how to use it - without the need for comments. |
-| Matrix vs gameBoard kanske är något långsökt men kanske kan man anse att MatrixAnalyzer skulle hetat GameBoardAnalyzer för att hålla ihop namn-koncepten. Nu ser jag det som att MatrixAnalyzer är en potentiellt generell tjänst som kan utvecklas att operera på matriser. Till en början hade jag cell och square som namn för samma koncept. Det var ohemult opraktiskt. Jag har använt signatur ibland och value ibland för att syfta till cellers textcontent. | Det är viktigt att hålla sig till ett enda gemensamt namn för ett visst koncept. |
-| Jag tror jag har lyckats bra här med att inte kräva mental mappning för att förstå koden. Namnen är mer genomtänkta än vanligt från min sida. getLongestMatchingLineIntersectingCell är en knepig funktion. Tycker jag har lyckats abstrahera en hel del så att man kan läsa vad som händer. Kanske lite svårt att greppa hur direction fungerar utan att titta i definitionen eftersom den är nästlad. Jag har undvikit att använda intetsägande namn som variabeln temp eller hinken, x, y etc. | Använd namn som tydligt talar om vad det är, vad det gör o s v. Man ska inte behöva mentalt mappa om namnet. T ex let hinken = maxAge() eller i = maxAge() |
-| Uppfödd med Excel och datalistor så håller jag med om att det är viktigt att hålla sig med sökbarhet. Använd enhetliga namn. Tänk på sortering filtrering och att hålla namn unika. Hopplöst om t ex variabeln longest dyker upp i många metoder. Undvik liknande namn som kan blandas samman vid sökning tex getCellMaxMin getCellMinMax.                  | Se till att namn anpassas för att vara sökbara om det behövs. Enbokstavsvariabelnamn är rimliga att använda lokalt i små metoder. Variabler som har ett större scoop bör namnges så att de lätt kan hittas vid sökning.                                       |
+| `getCellElementRowCol` (En metod som returnerar HTMl-cell-elementet vid koordinaten Row,column) Jag har använt col som förkortning för column. Förkortningar är ett gissel. Kanske __getCellElementAtRowColumn__ skulle ha varit tydligare. Det talar om att den returnerar ett element och att argumenten ska vara Row och Column. Det är kanske inte heller självklart att man får ett HTMLelement. Så kanske __getCellHtmlElementAtRowColumn__ hade varit än bättre. Men på bekostnad av läsbarhet. Särskilt med tanke på att jag har en __getCellByRowCol__. Skillnaden mellan Cell och CellElement kanske inte är tillräckligt distinkt. Vid sökning kommer alla get att komma upp så att man ser vad man kan getta.  | Vilseledande och dubbeltydiga namn och förkortningar bör undvikas. `Avoid Disinformation` [s19-20]. Använd sökfunktioner på ett smart sätt. `Use searchable Names` [s22-23] Använd distinkta namn som gör det lätt att hålla isär begrepp. `Make meaningful distictions` [s20-21]|
+| `getLongestCellLineOfValueMatchIntersectingCell` (Metod som används för att hitta den längsta matchande raden). Det här är det längsta namnet jag fick till. Det är också det namn jag lagt mest möda på för att få till. Den är omdöpt hundra gånger. Den största svårigheten var att få fram intentionen utan att förstöra läsbarheten. Jag tror jag har misslyckats kapitalt. Jag vill säga metoden returnerar den längsta raden av celler som matchar värdet hos cellen i fråga som raden skär. Jag skulle också vilja nämna att den tittar i horisontellt, vertikalt, och diagonalt. I det publika gränssnittet kanske det å ena sidan skulle vara bättre att ha en __check4Winner()__. Kort, koncist men säger inte mycket om vad den gör. Vore det väldigt specialicerat och uppenbart vilket regelverk som gäller för en vinnare så kanske det kunde gått. Men, och det är ofta där jag stupar, jag vill att det skall vara flexibelt om utifallatt jag skulle vilja ha andra regler och möjligheter att vinna. En möjlighet då skulle vara att skicka med regelverket i check4Winner(basedOnRuleSet). I övrigt tycker jag namnet är för långt och svårläst. Det är uttalbart, men i klass med "...laxar i en lackask...". | "A name of a method, class or variable should say why it exists, what it does, how to use it - without the need for comments." `Use Intention-Revealing Names` [s18-]. `Use Pronouncable Names.` [s21-22]. |
+| `gameBoard` (Är min huvudklass med interface-metoder). Hur har jag tänkt när jag använder Matrix och `gameBoard` i samma kontext? Kanske kan man anse att MatrixAnalyzer skulle hetat GameBoardAnalyzer för att hålla ihop namn-koncepten. Nu ser jag det som att MatrixAnalyzer är en potentiellt generell 'tjänst' som kan utvecklas att operera på matriser. En betydligt mer svårmotiverad namngivning var att jag initialt använde cell och square för samma koncept. Det var ohemult opraktiskt. Jag har använt signatur ibland och value ibland för att syfta till cellers textcontent. Positivt är att klassnamnet är ett substantiv - ett objekt - (en, ett, flera...). En dröm, en idé, en känsla... | Det är viktigt att hålla sig till ett enda gemensamt namn för ett visst koncept. `Pick One Word per Concept` [s26]. Class and objects should have noun or noun phrase names. `Class Names` [s25]. |
+| `isRowColumnOnBoard` (En hjälpfunktion för att kunna testa om en positionen för en cell är på spelbrädet). Jag tror jag har lyckats bra här med att inte kräva mental mappning för att förstå koden. Namnen är mer genomtänkta än vanligt från min sida. Jag har undvikit att använda intetsägande namn som variabeln temp eller hinken, x, y etc. T ex let hinken = maxAge() eller i = maxAge(). Att använda is och get, update etc ger en tydlig hint om vilken typ av metod det är fråga om. 'Is' säger att den aktuella metoden returnerar en boolean beroende på om row och colum är på brädet. Självklart för mig nu, men är det Row och Column eller Row eller Column? Är inte OnBoard (Ombord vs On game board) lite sött ändå? Kanske borde vara __isRowAndColumnOnGameBoard__? | Använd namn som tydligt talar om vad de är, vad de gör o s v. Man ska inte behöva mentalt mappa om namnet. `Avoid Mental Mapping` [s25]. Methods should have verb or verb phrase names... `Method Names` [s25]. `Don't Be Cute`[s26]|
+| `addClickEventToCells` (En metod för att aktivera klickfunktion på utvalda celler på spelbrädet.). Event är ett begrepp som är självklart för en programmerare. I det här fallet är Cells ett begrepp från problem-domänen. Det kan krävas lite förståelse för hur spelet ser ut och fungerar för att ta till sig cell. Kanske får man fråga en domänexpert rentav. | `Use Solution Domain Names` [s27]. `Use Problem Domain Names` [s27] |
 
-### Allmänt
+### Allmänna reflektioner om kap 2
 
-Jag har 3 klasser:
+Kapitel 2 Kommunikation kräver tydlighet och precision. Ändå är det så svårt! Det är lätt att vara lat och att ta genvägar! En för mig typisk och återkommande tabbe är att använda förkortningar. Jag gillar inte ens förkortningar.
 
-CellSizeWidthHeight
-MatrixRowsColumns
-PositionRowColumns
+I MatrixSizeRowsCols.ts använder jag "cols" istället för "columns". Shame on me! Förkortningen sparar 0,0000... åh!
+På samma tema: Jag hade data-col istället för data-column som attribut i Cell-klassen. Det orsakade flera buggar.
 
-De delar logik och skulle kunna passa in under regeln "is-a" för en basklass. Men jag tycker det är bättre att hålla dem åtskilda för att kunna namnge deras egenskaper individuellt.
-Istället kommer jag att extrahera duplicerade funktioner och placera dem i en util-klass som jag kallar Validator. Detta kunde ha varit en statisk klass. Men vi får inte använda statiska klasser.
+Istället för att fundera över vad jag sparar på att slarva borde jag fråga mig om jag har tid att felsöka i flera timmar imorgon.
 
-Det finns så många fällor. I MatrixSizeRowsCols.ts använder jag "cols" istället för "columns". Shame on me! Det sparar 0,0000... åh!
+Jag tenderar att inte tänka efter före... alls! Jag får en idé och varken ser eller funderar över vägen till mål. Jag bara försöker ta mig dit. Jag klättrar över berg och vadar genom dödens träsk och väl framme upptäcker jag att det fanns en cykelbana strax bredvid. Nästa gång kommer jag ju att ta cykelbanan. Om jag hade vetat så hade jag tagit cykelbanan redan från början. Min poäng, apropå inslagna dörrar, är att erfarenhet och kunskap spelar roll. Boken är bra på så sätt att den ger en verktygslåda med erfarenheter och konkreta tips.
 
-Jag har också size.rows (plural) jämfört med position.row (singular) vilket känns logiskt för mig men fortfarande förvirrande.
+I den här uppgiften har jag skrivit ett enkelt okomplicerat program och verkligen tvingat mig att tänka till när det gäller namngivning. Faktum är att jag är förvånad över vilken skillnad det gör. Framförallt när jag börjat ändra och råkar införa buggar har det varit markant lättare att felsöka och hitta.
 
-Jag hade data-row och data-col som attribut i Cell-klassen. Det orsakade en bugg.
-
-Kanske borde size propertyn i GameBoard ha hetat rowsColumnsSize.
+Använda enhetliga namn där det är lämpligt att kategorisera. Använda unika namn för att särskilja. Om variabeln longest dyker upp i många metoder men används i olika syfte kan det vara svårt att hitta rätt och följa koden. en fälla jag gått i är att använda snarlika namn med någon detalj som skiljer för att kunna skilja dem åt, t ex updateSquare, RefreshSquare. Ibland blir man väldigt sugen på söta namn. Särskilt om man kommer på nåt bra. GimmeDaCellAt_OrIllComeAfterYou! Jag var nära här att börja använda Mxa som prefix till matrixAnalyzer metoder. Men jag höll emot. Se till att namn anpassas för att vara sökbara om det behövs.
 
 Jag försöker tänka att jag ska standardisera sättet jag skriver på. Undvika förkortningar, inte använda underscore i onödan.
 
+Jag gillar "One difference between a smart programmer and a professional programmer is that the professional understand that clarity is king". Det är viktigt att förstå att koden är ett budskap som har en eller flera mottagare. Det är viktigt att sändaren förstår att den har ett ansvar att anpassa budskapet så att kommunikationen med mottagaren fungerar. Sändaren kanske måste anpassa budskapet. Mottagarna ska kunna förstå och behandla och kanske "svara" på budskapet. Säg att du jobbat i 20 år med en kodbas och ska lämna över till en nyanställd. Det ställer andra krav än att lämna över koden till din coworker under semestern. Men varför chansa? Låt alltid clarity vara king!
+
 ## Reflektioner kap 3
 
-| Metodnamn och länk eller kod | Antal rader ( ej ws )
-Reflektion | Reflektion |
+| Metodnamn och länk eller kod | Antal rader ( ej ws ) | Reflektion |
 | ------------------- | ------------------------------------- | ------------------------------------- |
-| #getMatchesInSpecifiedDirection(currentCell:HTMLElement, direction:number[]):HTMLElement[] | 19 |                                        |
-| getLongestMatchingLineIntersectingCell(currentCell:HTMLElement):HTMLElement[] | 16 |                                       |
+| #getMatchesInSpecifiedDirection(currentCell:HTMLElement, direction:number[]):HTMLElement[] [länk](https://github.com/Jce750/1DV610_L2/blob/4592115bceb789b1364fa4028d73675291cce053/src/MatrixAnalyzer.ts#L49-L74)| 19 | Det här är min längsta funktion. Den är som ett svart hål. När man försöker läsa koden sugs man in där och kommer aldrig därifrån. `Small` [s34]. Den här metoden gör mer än en sak och skulle tjäna på att delas upp i mindre bitar. `Do One Thing` [35]. Den gör saker på en väldigt låg nivå. Dessa bör brytas ut och abstraheras. Abstraktionerna bör sträva efter att vara på en enhetlig nivå i en metod. `One Level of Abstraction per Function` [s36]. While-loopen kunde ha använt gör-tills-break eller continue men det gör det inte. Istället har den en enda return. Det gör den till en query. Den ska alltså inte samtidigt förändra state på objekt. Använder en argument-array Här finns just nu massor av sidoeffekter i form av console.log()
+
+| getLongestMatchingLineIntersectingCell(currentCell:HTMLElement):HTMLElement[] | 16 | Men här är jag lost. Vem ska göra det här? Från början verkade det jättekäckt att ha en gameboard och en separat analysator. Men det här är grötigt. En sak som ställer till det är hur jag hanterar directions. Den är en number[][][]. Jag har en nivå med fyra axlar horisont, vertikal och diagonaler. Sen har varje axel positivSida och negativSida så att säga. Jag summerar matchningarna från var sida med den aktuella utgångspunkten. Axlarna kanske skall vara en klass istället?                                       |
 | isRowColumnFiniteIntegers(row:number, column:number) | 11 |                                       |
 | #validateInput | 14 |                                       |
-| addclickEventToCells(cellElements:HTMLCollection, onclick: (event: MouseEvent) => void):void | 11 |                                       |
+| addclickEventToCells(cellElements:HTMLCollection, onclick: (event: MouseEvent) => void):void | 11 |                                     |
+| isRowColumnFiniteIntegers(row:number, column:number) https://github.com/Jce750/1DV610_L2/blob/4592115bceb789b1364fa4028d73675291cce053/src/Validator.ts| 11 | Dyadic function: Jag kunde ha valt att låta funktionen kontrollera ett värde i taget och gjort två anrop. Men jag tyckte det här var lagom. new validator().isRowColumnFiniteIntegers(rowIndex,columnIndex) är långt att läsa men det säger vad den gör. Den hintar också vilka argument som krävs. Har missat att den kräver att värdet ska vara större än noll. Så namnet borde vara isRowColumnPositiveFiniteInteger(...) Funktionen i sig kunde ha delats upp i flera underfunktioner som isFinite(row), isPositive(row), isInteger(row). ... Aha! så gör jag! Så kan jag kedja de kontroller av row/column jag vill göra. Det blir flexibelt och bra! Det blev alltså:
+new validator(rows).isPositive().isFinite().isInteger() istället. Det blev färre argument och de returnerar en sak. Man får ett exakt felmeddelande som kan innehålla regeln som man brutit mot eller en specifik instruktion istället för en hel manual. Varje funktion gör en sak. I det här fallet kastas ett undantag om det krävs. Felhantering är en sak.
 
 
-### Allmänt
-blabla
+### Allmänna reflektioner om kap 3
+Jag har fått tänka till kring användningen av många argument. Det känns så självklart när man läser att man ska sikta mot noll argument. Men när jag ger mig på en portion spagetti, jag menar en raskt hopkastad funktion så är det inte så lätt att få till det. Trots min ringa erfarenhet så kan jag föreställa mig hur svårt det blir att utföra heltäckande testning när komplexiteten ökar. Antalet möjligheter på mitt gameboard får tanken att svindla.
+
+Jag vet att jag använt out (C#) för att skicka in parametrar som argument till metoder i syfte att låta metoden initialisera parametern till ett visst värde. Men det känns avigt och jag kommer undvika output arguments i det längsta. Det får bli input-args-command-return-patternet istället.
+
+Det är inte så längesedan jag använde bitflaggor och det känns fortfarande som att det kan finnas tilfällen när det är användbart. Typ att avvakta att alla blir satta innan man gör nåt. Jag kan förstå att det är svårare att se vad en funktion kommer göra om man skickar in en flagga som argument. men det känns som att logiken måste få finnas nånstans.
+
+Behöver få jobba lite med allt detta nyvunna tänk för att spontant kunna se vilka vägar som är bra att gå och se nyttan. Just nu är det som att jag hör vad du säger och jag vet att du har rätt men ändå...
+
+Hur blir det med event? Jag klickar på en knapp och det kan leda till en lång kedja av händelser. Tex ändra status på gameboardCellen. Kolla om jag vann. I så fall frys spelet. Fira mig etc. Ska den heta handleCellclicked bara?
+
+Objekt som argument känns som en av de mer kraftfulla verktygen i det här kapitlet. Jag har t ex försökt slå ihop row och column genom en position-klass. Genast känns det lite mer robust. Man får lite validering. Men också problement att objektet kan kasta undantag. Jag testade något i stil med willThisObjectThatIWantToCreateBeOk() innan jag skapar det. Det är en av flera varianter jag testat. Returnera null är inte så poppis förstår jag. Det känns annars ganska rakt. Jag vill ändå inte lita på att jag inte kommer att få null i retur. Det fanns en null lösning där man kunde andvända optional. Men det gjorde inte underverk för läsbarheten så den ratades.
 
 ## Generellt kodkvalitet
 
-Det är toppen att vi får en duvning i Clean Code. Det hjälper mig väldigt mycket. Jag tvingas in i ett bättre och mer strukturerat tänk. Förstår finnesserna i språken lte bättre också.
+Clean code - by the book
+
+- minimal
+- efficient
+- with care
+- one thing
+- simple
+- readable - literate
+- elegant - beautiful
+- crisp abstraction
+
+I am also adding communication - code communicates - and craft - the beauty of craft!
+
+Redan de gamla grekerna... Okej, vi hoppar fram till industrialismen som fick tillgång till en ny kraft genererad av ånga. Produktiviteten ökade och ångmaskinen var hjärtat som höll den igång. Ett stort antal ångmaskiner exploderade vilket ledde till materiella kostnader såväl som dödade och skadade människor. En av orsakerna var att man inte hade koll på materialframställningsprocesserna och använde spröda material. Det ledde till att man började samla data och forska. Man noterade processer som fungerade och utvecklade därifrån byggde på och så vidare (kaizen). Det gav tillförlitlighet, låg risk, säker investering - kvalitet.
+
+När jag började jobba fick jag höra om maskindirektivet och riskanalyser. EG ville skapa en friktionsfri inre marknad och ville se till att produkter konkurrerade på lika villkor genom att ge dem gemensamma grundkrav. T ex skulle tillverkaren ha kollat igenom dess risker. Grundkraven specas i standarder. Om produkten uppfyller standarden så vet vi var vi har den. Den uppfyller grundkraven och kan tillåtas konkurrera med andra produkter.
+
+Jag använder gpt 4. Den största nyttan jag har av ai:n är att den hjälper mig att matcha mina frågor med Stackoverflow-svar snabbt och lätt. Den kan generera exempel och förtydliga saker så att jag får en djupare förståelse på kortare tid. Felsökning är ett annat område där den sparar tid. Jag tycker inte den har varit särskilt duktig på att hjälpa mig att utveckla min kodkvalitet. Finliret är fortfarande ett hantverk för oss människor.
+
+Bokens författare [Clean Code - Robert C Martin] förväntar sig att programmeringens abstraktionsnivån kommer lyftas ytterligare. Jag tänker att abstraktion är nödvändig för att ta vara på vunnen kunskap och kunna lägga energi på att jaga ny. I någon mån leder kanske abstraktionen till specialisering. Specialisering är kostsam och ett risktagande som måste vägas mot nyttan av skräddarsydda verktyg. Kommande generationer ai kanske kommer kanske att förskjuta break-even så att vi kan lägga mer energi på specialisering. Ju mer vi vill använda ai desto större krav ställer det på kodkvalitet (påstår jag). Ju bättre vi förklarar vår intention desto bättre kan den hjälpa oss att föreslå hjul som redan uppfunnits. Så att vi kan lyfta blicken.
+
+Under min uppväxt var mjukvara något av en dagslända. Appar kom och gick. Hårdvaran utvecklades i rasande tempo. Många försök i tidens anda att skapa strukturer för framtiden ligger i papperskorgen. Vad består? Vad bygger vi vidare på idag?
+
+Så Jag vet att det finns goda skäl att skriva bra kod från start. Även för mig som nybörjare i hantverket blir det tydligt vilken skillnad det är när kod är välskriven. "A programmer without 'code-sence' can look at a messy module and recognize the mess but will have no idea what to do with it." [Clean Code - Robert C Martin, s 7]. Steget till ett företag och lönsamhet är inte långt. Ändå hamnar vi där ibland. Sparade vi tid? Sparade jag tid när jag skrev en förkortning som ledde till en bug. "As the mess builds up, the productivity decreases" [Clean Code - Robert C Martin, s 4]. När är det dags att göra jobbet att bygga om koden? Hur ska det göras? Om koden är i produktion, ska befintlig kod underhållas parallellt med att en kopia renoveras? Gör om gör rätt? Nä, lär dig att göra rätt direkt!
+
+Det är toppen att vi får en duvning i Clean Code. Det känns som att 1DV607 och och 1DV610 handlar om samma sak. Att skapa en bra struktur. En kodkultur som fungerar, som är enhetlig. Det hjälper mig väldigt mycket. Jag tvingas in i ett bättre och mer strukturerat tänk. Förstår finnesserna i språken lite bättre också.

@@ -1,14 +1,15 @@
-import { PositionRowColumn } from './PositionRowColumn'
-import { CellSizeWidthHeight } from './CellSizeWidthHeight'
+import { PositionRowColumn } from './PositionRowColumn.js'
+import { CellSizeWidthHeight } from './CellSizeWidthHeight.js'
 
 export class Cell {
   #position: PositionRowColumn = new PositionRowColumn(1,1)
   #cellSize: CellSizeWidthHeight = new CellSizeWidthHeight(10,10)
   #cellElement: HTMLElement = document.createElement('div')
+  #eventHandler: (event: MouseEvent) => void = (event: MouseEvent) => {}
 
   constructor(position: PositionRowColumn, cellSize: CellSizeWidthHeight){
-    this.position = position
-    this.cellSize = cellSize
+    this.#position = position
+    this.#cellSize = cellSize
     this.#cellElement = this.#createCell()
   }
 
@@ -24,12 +25,20 @@ export class Cell {
     return this.#cellElement
   }
 
+  get eventHandler():(event: MouseEvent) => void{
+    return this.#eventHandler
+  }
+
   set position(position:PositionRowColumn){
     this.#position = position
   }
 
   set cellSize(cellSize:CellSizeWidthHeight){
     this.#cellSize = cellSize
+  }
+
+  set eventHandler(eventHandler:(event: MouseEvent) => void){
+    this.#eventHandler = eventHandler
   }
 
   #createCell():HTMLElement {
@@ -42,5 +51,13 @@ export class Cell {
     cell.innerText = ''
     return cell
   }
-}
+  addClickEventListener(onclick: ((event: MouseEvent) => void)):void{
+    this.#cellElement.addEventListener('click', onclick)
+    this.#eventHandler = onclick
+  }
 
+  removeClickEventListener():void{
+    this.#cellElement.removeEventListener('click', this.#eventHandler)
+  }
+
+}

@@ -1,23 +1,24 @@
-import { MatrixSizeRowsCols } from './MatrixSizeRowsCols'
-import { CellSizeWidthHeight } from './CellSizeWidthHeight'
-import { Cell } from './Cell'
-import { PositionRowColumn } from './PositionRowColumn'
-import { MatrixAnalyzer } from './MatrixAnalyzer'
-import { RangeMinMax } from './RangeMinMax'
-import { Limits } from './Limits'
+import { MatrixSizeRowsCols } from './MatrixSizeRowsCols.js'
+import { CellSizeWidthHeight } from './CellSizeWidthHeight.js'
+import { Cell } from './Cell.js'
+import { PositionRowColumn } from './PositionRowColumn.js'
+import { MatrixAnalyzer } from './MatrixAnalyzer.js'
+import { RangeMinMax } from './RangeMinMax.js'
+import { Limits } from './Limits.js'
 
 export class GameBoard{
 
   #matrixSize:MatrixSizeRowsCols
   #cellSize:CellSizeWidthHeight
   #gameBoardElement:HTMLElement = document.createElement('div')
+  #cells:Cell[] = []
 
   constructor(rows:number,columns:number){
-    new RangeMinMax(1, Limits.MaxRows).checkValueInRange(rows)
-    new RangeMinMax(1,Limits.MaxColumns).checkValueInRange(columns)
+    new RangeMinMax(Limits.MinRows, Limits.MaxRows).checkValueInRange(rows)
+    new RangeMinMax(Limits.MinColumns,Limits.MaxColumns).checkValueInRange(columns)
     this.#matrixSize = new MatrixSizeRowsCols(rows,columns)
     this.#cellSize = new CellSizeWidthHeight(10,10)
-    this.#gameBoardElement = this.#createGameBoardElement()
+    this.#createGameBoard()
   }
 
   get size():MatrixSizeRowsCols{
@@ -36,6 +37,20 @@ export class GameBoard{
     return this.#gameBoardElement.querySelectorAll('.cell')
   }
 
+  // Update Tests
+  get allCells():Cell[]{
+    return this.#cells
+  }
+
+  // TODO: Add Test for this method
+  #getCellbyRowColumn(row:number, column:number):Cell {
+    const cell = this.#cells.find(cell => cell.position.row === row && cell.position.column === column)
+    if (!cell) {
+      throw new Error('cell not found')
+    }
+    return cell
+  }
+
   getCellElementRowCol(row:number,col:number):HTMLElement{
     if (row < 1 || row > this.#matrixSize.rowsSize || col < 1 || col > this.#matrixSize.columnsSize) {
       throw new Error('row or column out of range')
@@ -51,17 +66,15 @@ export class GameBoard{
     return this.getCellElementRowCol(row,col).innerText
   }
 
-  test(test:string):void{
-    console.log(test)
-  }
-
-  #createGameBoardElement():HTMLElement {
+  // TODO Update tests (not returning element)
+  // TODO Update tests Adding cell to cells
+  #createGameBoard():void {
     const gameBoardElement = document.createElement('div')
     gameBoardElement.classList.add('gameboard')
     for (let row = 1; row <= this.#matrixSize.rowsSize; row++) {
       gameBoardElement.appendChild(this.#createRowOfCells(row))
     }
-    return gameBoardElement
+    this.#gameBoardElement = gameBoardElement
   }
 
   #createRowOfCells (row:number):HTMLElement {
@@ -75,19 +88,35 @@ export class GameBoard{
 
   #createCell(position: PositionRowColumn):Cell {
     const cell = new Cell(position,this.#cellSize)
+    this.#cells.push(cell)
     return cell
   }
 
-  addclickEventToCells(cellElements:NodeListOf<Element>, onclick: (event: MouseEvent) => void):void {
+  addClickEventToCells(cells:Cell[], onclick: ((event: MouseEvent) => void)):void {
+    for (const cell of cells) {
+      if (!this.#isCellOnBoard(cell)) {
+        throw new Error('cell must be on board')
+      }
+    }
     if (typeof onclick !== 'function') {
       throw new Error('onclick must be a function')
     }
-    for (const cellElement of cellElements) {
-      if (!(cellElement instanceof HTMLElement)) {
-        throw new Error('cell must be an HTMLElement')
-      }
-    cellElement.addEventListener('click', onclick)
+    for (const cell of cells) {
+      cell.addClickEventListener(onclick)
     }
+  }
+
+  removeClickEventFromCells(cellElements:NodeListOf<Element>):void {
+    throw new Error('Not implemented')
+  }
+
+  #isCellOnBoard(cell:Cell):boolean {
+    return this.isRowColumnOnBoard(cell.position.row, cell.position.column)
+  }
+
+  isRowColumnOnBoard(row:number, column:number):boolean{
+    return row >= 1 && row <= this.#matrixSize.rowsSize &&
+      column >= 1 && column <= this.#matrixSize.columnsSize
   }
 
   updateCellWidthHeight(width:number,height:number):void {

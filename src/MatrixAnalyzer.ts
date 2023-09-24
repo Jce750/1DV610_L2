@@ -1,4 +1,5 @@
-import { GameBoard } from "./GameBoard"
+import { GameBoard } from "./GameBoard.js"
+import { PositionRowColumn } from "./PositionRowColumn.js"
 
 export class MatrixAnalyzer{
 
@@ -6,10 +7,6 @@ export class MatrixAnalyzer{
 
   constructor(gameboard:GameBoard){
     this.#gameboard = gameboard
-  }
-
-  test(){
-    console.log('Hello from MatrixAnalyzer')
   }
 
   #defineDirections():number[][][]{
@@ -42,34 +39,51 @@ export class MatrixAnalyzer{
         longest = longestSoFar
       }
     }
-    console.log(`longest: ${longest.length}`)
+    console.log('longest: ', longest.length)
     return longest;
   }
 
   #getMatchesInSpecifiedDirection(currentCell:HTMLElement, direction:number[]):HTMLElement[] {
-    const [dRow, dCol] = direction
     const signature = currentCell.innerText
-    // Get first neighbor in specified direction
-    let row = Number(currentCell.dataset.row) + dRow
-    console.log(`Check dir: ${direction}`)
-    let col = Number(currentCell.dataset.col) + dCol
-    console.log(`pos2compare: ${row},${col}`)
-    
-    let matchingCells:HTMLElement[] = []
     const board = this.#gameboard
-    let length = 0;
-    while (
-      row > 0 && row <= board.size.rowsSize &&
-      col > 0 && col <= board.size.columnsSize &&
-      board.getCellElementValueRowCol(row,col) === signature
-    ) {
-      console.log(`sig: ${signature} = ${board.getCellElementValueRowCol(row,col)}`)
-      console.log(`push row: ${row}, ${col}`)
-      matchingCells.push(board.getCellElementRowCol(row,col))
-      row += dRow;
-      col += dCol;
+    let currentPosition = this.getCurrentCellElementPosition(currentCell)
+    let matchingCells:HTMLElement[] = []
+    // Get first neighbor in specified direction
+    if (this.#isCellNeighborInDirectionOnBoard(currentPosition, direction)) {
+      currentPosition = this.getNextCellPositionInDirection(currentPosition, direction)
+      while (
+        board.isRowColumnOnBoard(currentPosition.row, currentPosition.column) &&
+        board.getCellElementValueRowCol(currentPosition.row, currentPosition.column) === signature
+      ) {
+        matchingCells.push(board.getCellElementRowCol(currentPosition.row,currentPosition.column))
+        currentPosition = this.getNextCellPositionInDirection(currentPosition, direction)
+      }
     }
-    console.log(`No match for: ${signature} at ${row},${col}`)
     return matchingCells;
+  }
+
+  getCurrentCellElementPosition(currentCell:HTMLElement):PositionRowColumn {
+    const row = Number(currentCell.dataset.row)
+    const column = Number(currentCell.dataset.col)
+    return new PositionRowColumn(row,column)
+  }
+
+  getNextCellPositionInDirection(position:PositionRowColumn, direction:number[]):PositionRowColumn {
+    const [dRow, dColumn] = direction
+    const row = position.row + dRow
+    const column = position.column + dColumn
+    return new PositionRowColumn(row,column)
+  }
+
+  #isRowColumnOnBoard(row:number, column:number):boolean{
+    return row >= 1 && row <= this.#gameboard.size.rowsSize &&
+      column >= 1 && column <= this.#gameboard.size.columnsSize
+  }
+
+  #isCellNeighborInDirectionOnBoard(position:PositionRowColumn, direction:number[]):boolean {
+    const [dRow, dCol] = direction
+    const row = position.row + dRow
+    const column = position.column + dCol
+    return this.#isRowColumnOnBoard(row, column)
   }
 }

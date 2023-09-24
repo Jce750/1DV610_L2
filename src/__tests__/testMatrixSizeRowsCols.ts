@@ -12,9 +12,9 @@ describe('MatrixSizeRowsCols', () => {
     expect(() => new MatrixSizeRowsCols(10, NaN)).toThrow()
   })
 
-  it('should throw an error if row or column is not greater than 0', () => {
-    expect(() => new MatrixSizeRowsCols(0, 10)).toThrow()
-    expect(() => new MatrixSizeRowsCols(10, 0)).toThrow()
+  it('should throw an error if row or column is less than 0', () => {
+    expect(() => new MatrixSizeRowsCols(-1, 10)).toThrow()
+    expect(() => new MatrixSizeRowsCols(10, -1)).toThrow()
   })
 
   it('should throw an error if row or column is not an integer', () => {

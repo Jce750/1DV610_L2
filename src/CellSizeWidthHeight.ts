@@ -1,11 +1,12 @@
-import {validator} from './Validator'
+import {validator} from './Validator.js'
 
 export class CellSizeWidthHeight {
   #width:number = 20
   #height:number = 20
   
   constructor(public pixelWidth:number = 20,public pixelHeight:number = 20) {
-    new validator().isRowColumnFiniteIntegers(pixelWidth,pixelHeight)
+    new validator(pixelWidth).isPositive().isFinite().isInteger()
+    new validator(pixelHeight).isPositive().isFinite().isInteger()
     this.width = pixelWidth
     this.height = pixelHeight
   }
