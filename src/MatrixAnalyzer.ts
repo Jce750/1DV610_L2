@@ -39,7 +39,6 @@ export class MatrixAnalyzer{
         longest = longestSoFar
       }
     }
-    console.log('longest: ', longest.length)
     return longest;
   }
 
