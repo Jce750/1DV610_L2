@@ -29,7 +29,7 @@ describe.skip('GameBoard', () => {
     expect(gameboard.element).toBeTruthy()
   })
 
-  it ('should contain 25 cells', () => {
+  it ('should contain 25 HTMLElements', () => {
     expect(gameboard.cellElements.length).toBe(25)
   })
 
@@ -40,6 +40,11 @@ describe.skip('GameBoard', () => {
 
   it ('should throw an error if row is less than 1', () => {
     expect(() => gameboard.getCellElementRowCol(0,1)).toThrow('row or column out of range')
+  })
+
+  it ('should return all cells', () => {
+    const cells = gameboard.allCells
+    expect(cells.length).toBe(25)
   })
 
   it ('should return a cell element value for a given row and column', () => {
