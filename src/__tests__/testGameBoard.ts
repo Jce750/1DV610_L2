@@ -4,7 +4,7 @@
 import { GameBoard } from "../GameBoard";
 import { MatrixAnalyzer } from "../MatrixAnalyzer";
 import { PositionRowColumn } from "../PositionRowColumn";
-describe.skip('GameBoard', () => {
+describe('GameBoard', () => {
   let gameboard:GameBoard
   const mockHandleClickEvent = jest.fn()
 
@@ -67,6 +67,8 @@ describe.skip('GameBoard', () => {
     gameboard.getCellElementRowCol(1,5).innerText = 'X'
     const mxa = new MatrixAnalyzer(gameboard)
     const longestLine = mxa.getLongestMatchingLineIntersectingCell(cell)
+    const itemsFoundCount = gameboard.getLongestCellElementLineOfValueMatchIntersectingCell(cell).length
+    expect(itemsFoundCount).toBe(5)
     expect(longestLine.length).toBe(5)
   })
 

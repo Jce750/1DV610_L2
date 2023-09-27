@@ -1,5 +1,5 @@
-import { PositionRowColumn } from './PositionRowColumn.js'
-import { CellSizeWidthHeight } from './CellSizeWidthHeight.js'
+import { PositionRowColumn } from './PositionRowColumn'
+import { CellSizeWidthHeight } from './CellSizeWidthHeight'
 
 export class Cell {
   #position: PositionRowColumn = new PositionRowColumn(1,1)

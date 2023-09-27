@@ -3,7 +3,7 @@
  * Position is one-based, not zero-based.
  *
  */
-import { validator } from './Validator.js'
+import { validator } from './Validator'
 export class PositionRowColumn {
   #row:number = 1
   #column:number = 1

@@ -1,4 +1,4 @@
-import {validator} from './Validator.js'
+import {validator} from './Validator'
 
 export class CellSizeWidthHeight {
   #width:number = 20

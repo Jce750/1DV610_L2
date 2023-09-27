@@ -1,5 +1,5 @@
 import { GameBoard } from "./GameBoard.js"
-import { PositionRowColumn } from "./PositionRowColumn.js"
+import { PositionRowColumn } from "./PositionRowColumn"
 
 export class MatrixAnalyzer{
 

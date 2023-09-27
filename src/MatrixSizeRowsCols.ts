@@ -1,6 +1,6 @@
 //TODO: add setter validation
 
-import { validator } from "./Validator.js"
+import { validator } from "./Validator"
 
 export class MatrixSizeRowsCols {
   #rows:number = 5

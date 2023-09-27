@@ -1,10 +1,10 @@
-import { MatrixSizeRowsCols } from './MatrixSizeRowsCols.js'
-import { CellSizeWidthHeight } from './CellSizeWidthHeight.js'
-import { Cell } from './Cell.js'
-import { PositionRowColumn } from './PositionRowColumn.js'
-import { MatrixAnalyzer } from './MatrixAnalyzer.js'
-import { RangeMinMax } from './RangeMinMax.js'
-import { Limits } from './Limits.js'
+import { MatrixSizeRowsCols } from './MatrixSizeRowsCols'
+import { CellSizeWidthHeight } from './CellSizeWidthHeight'
+import { Cell } from './Cell'
+import { PositionRowColumn } from './PositionRowColumn'
+import { MatrixAnalyzer } from './MatrixAnalyzer'
+import { RangeMinMax } from './RangeMinMax'
+import { Limits } from './Limits'
 
 /**
  * The GameBoard class is where the public API for the game board is defined.
@@ -217,12 +217,22 @@ export class GameBoard{
    * @returns {HTMLElement[]} - An array of aligned HTMLElements with equal inner text values
    * @memberof GameBoard
    */
-  getLongestCellLineOfValueMatchIntersectingCell(currentCell:HTMLElement):HTMLElement[]{
+  getLongestCellElementLineOfValueMatchIntersectingCell(currentCell:HTMLElement):HTMLElement[]{
     if (!this.#isCellElementOnBoard(currentCell)) {
       return []
     }
     const mxa = new MatrixAnalyzer(this)
     return mxa.getLongestMatchingLineIntersectingCell(currentCell)
+  }
+
+  getAllPositionsOnBoardAsArray():PositionRowColumn[] {
+    const positions:PositionRowColumn[] = []
+    for (let row = 1; row <= this.#matrixSize.rowsSize; row++) {
+      for (let column = 1; column <= this.#matrixSize.columnsSize; column++) {
+        positions.push(new PositionRowColumn(row, column))
+      }
+    }
+    return positions
   }
 
   #isCellElementOnBoard(cellElement:HTMLElement):boolean {
@@ -261,16 +271,6 @@ export class GameBoard{
       cells.push(this.#getCellByPosition(position))
     }
     return cells
-  }
-
-  getAllPositionsOnBoardAsArray():PositionRowColumn[] {
-    const positions:PositionRowColumn[] = []
-    for (let row = 1; row <= this.#matrixSize.rowsSize; row++) {
-      for (let column = 1; column <= this.#matrixSize.columnsSize; column++) {
-        positions.push(new PositionRowColumn(row, column))
-      }
-    }
-    return positions
   }
 
   #createRowOfCells (row:number):HTMLElement {
