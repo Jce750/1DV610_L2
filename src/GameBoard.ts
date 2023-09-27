@@ -126,7 +126,7 @@ export class GameBoard{
    * @throws {Error} - If onclick is not a function
    */
   addClickEventToCells(positions: PositionRowColumn[], onclick: ((event: MouseEvent) => void)):void {
-    let cellsToUpdate:Cell[] = this.#getCellsByArrayOfPositions(positions)
+    let cellsToUpdate:Cell[] = [...this.#getCellsByArrayOfPositions(positions)]
     for (const cell of cellsToUpdate) {
       if (!this.#isCellOnBoard(cell)) {
         throw new Error('cell must be on board')

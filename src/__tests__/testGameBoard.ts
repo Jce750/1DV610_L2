@@ -49,6 +49,11 @@ describe('GameBoard', () => {
     expect(cellElementValue).toBe('X')
   })
 
+  it ('should return an array of all positions on the board', () => {
+    const positions:PositionRowColumn[] = gameboard.getAllPositionsOnBoardAsArray()
+    expect(positions.length).toBe(25)
+  })
+
   it ('should count the number of cells that have been clicked', () => {
     let positions:PositionRowColumn[] = gameboard.getAllPositionsOnBoardAsArray()
     gameboard.addClickEventToCells(positions, mockHandleClickEvent)
