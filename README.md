@@ -121,6 +121,8 @@ this.#gameboardElement.appendChild(this.#gameboard.element);
 
 This getter returns a `NodeListOf<Element>` containing all cell elements.
 
+## Public Methods
+
 ### getCellElementRowColumn(row:number, column:number):HTMLElement
 
 This getter returns the cell-html-element corresponding to a row and column.
@@ -135,20 +137,21 @@ This method allows you to update the size of the board cells.
 gameBoard.updateCellWidthHeight(20, 30);
 ```
 
-### `addclickEventToCells(cellElements: HTMLCollection, onclick: (event: MouseEvent) => void): void`
+### `addclickEventToCells(positions: PositionRowColumn[], onclick: (event: MouseEvent) => void): void`
 
 This method allows you to add a click event to each cell in `cellElements`. You can pass a tailored event method as the second argument.
 
 #### Example:
 
 ```javascript
-this.#gameboard.addclickEventToCells(this.#gameboard.cellElements, this.boundHandleClick);
+this.#gameboard.addclickEventToCells(this.#gameboard.getAllPositionsOnBoardAsArray(), this.boundHandleClick);
 ```
 
 **Note**: Bind the method to `this` in the constructor of the calling class:  
 `this.boundHandleClick = this.handleClick.bind(this);`
 
 Can be used in conjunction with:
+
 ```javascript
 cells.forEach(cell => {
   cell.removeEventListener('click', this.boundHandleClick);
@@ -183,6 +186,16 @@ This method returns an array of HTML-cell-elements representing the longest line
 
 ```javascript
 const aligned = gameBoard.getLongestCellLineOfValueMatchIntersectingCell(currentCell);
+```
+
+### `getAllPositionsOnBoardAsArray():PositionRowColumn[]`
+
+This method returns an array of PositionRowColumn-objects representing all the position of all the cells on the game board.
+
+#### Example:
+
+```javascript
+const positionsOnBoard = gameBoard.getAllPositionsOnBoardAsArray();
 ```
 
 ## Limits

@@ -125,33 +125,6 @@ export class GameBoard{
    * @throws {Error} - If cell is not in the range of the game board
    * @throws {Error} - If onclick is not a function
    */
-  addClickEventToCells1(cells:Cell[], onclick: ((event: MouseEvent) => void)):void {
-    for (const cell of cells) {
-      if (!this.#isCellOnBoard(cell)) {
-        throw new Error('cell must be on board')
-      }
-    }
-    if (typeof onclick !== 'function') {
-      throw new Error('onclick must be a function')
-    }
-    for (const cell of cells) {
-      cell.addClickEventListener(onclick)
-    }
-  }
-
-  
-  /**
-   * Use this to attach a click event to a specific range of cell elements.
-   * The event handler passed as an argument is attached to each cell element.
-   * 1-based indexing is used for rows and columns.
-   *
-   * @param {RangeMinMax} rowRange - The range of rows to attach the event to
-   * @param {RangeMinMax} colRange - The range of columns to attach the event to
-   * @param {((event: MouseEvent) => void)} onclick - The event handler is passed the event object as an argument
-   * @memberof GameBoard
-   * @throws {Error} - If cell is not in the range of the game board
-   * @throws {Error} - If onclick is not a function
-   */
   addClickEventToCells(positions: PositionRowColumn[], onclick: ((event: MouseEvent) => void)):void {
     let cellsToUpdate:Cell[] = this.#getCellsByArrayOfPositions(positions)
     for (const cell of cellsToUpdate) {
@@ -225,6 +198,12 @@ export class GameBoard{
     return mxa.getLongestMatchingLineIntersectingCell(currentCell)
   }
 
+  /**
+   * Returns an array of positions for all the cells on the game board.
+   * 1-based indexing is used for rows and columns.
+   * @returns {PositionRowColumn[]} - An array of positions for all the cells on the game board
+   * @memberof GameBoard
+   */
   getAllPositionsOnBoardAsArray():PositionRowColumn[] {
     const positions:PositionRowColumn[] = []
     for (let row = 1; row <= this.#matrixSize.rowsSize; row++) {
