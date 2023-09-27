@@ -125,7 +125,7 @@ export class GameBoard{
    * @throws {Error} - If cell is not in the range of the game board
    * @throws {Error} - If onclick is not a function
    */
-  addClickEventToCells(cells:Cell[], onclick: ((event: MouseEvent) => void)):void {
+  addClickEventToCells1(cells:Cell[], onclick: ((event: MouseEvent) => void)):void {
     for (const cell of cells) {
       if (!this.#isCellOnBoard(cell)) {
         throw new Error('cell must be on board')
@@ -135,6 +135,34 @@ export class GameBoard{
       throw new Error('onclick must be a function')
     }
     for (const cell of cells) {
+      cell.addClickEventListener(onclick)
+    }
+  }
+
+  
+  /**
+   * Use this to attach a click event to a specific range of cell elements.
+   * The event handler passed as an argument is attached to each cell element.
+   * 1-based indexing is used for rows and columns.
+   *
+   * @param {RangeMinMax} rowRange - The range of rows to attach the event to
+   * @param {RangeMinMax} colRange - The range of columns to attach the event to
+   * @param {((event: MouseEvent) => void)} onclick - The event handler is passed the event object as an argument
+   * @memberof GameBoard
+   * @throws {Error} - If cell is not in the range of the game board
+   * @throws {Error} - If onclick is not a function
+   */
+  addClickEventToCells(positions: PositionRowColumn[], onclick: ((event: MouseEvent) => void)):void {
+    let cellsToUpdate:Cell[] = this.#getCellsByArrayOfPositions(positions)
+    for (const cell of cellsToUpdate) {
+      if (!this.#isCellOnBoard(cell)) {
+        throw new Error('cell must be on board')
+      }
+    }
+    if (typeof onclick !== 'function') {
+      throw new Error('onclick must be a function')
+    }
+    for (const cell of cellsToUpdate) {
       cell.addClickEventListener(onclick)
     }
   }
@@ -215,12 +243,34 @@ export class GameBoard{
     this.#gameBoardElement = gameBoardElement
   }
 
-  #getCellbyRowColumn(row:number, column:number):Cell {
+  #getCellByRowColumn(row:number, column:number):Cell {
     const cell = this.#cells.find(cell => cell.position.row === row && cell.position.column === column)
     if (!cell) {
       throw new Error('cell not found')
     }
     return cell
+  }
+
+  #getCellByPosition(position:PositionRowColumn):Cell {
+    return this.#getCellByRowColumn(position.row, position.column)
+  }
+
+  #getCellsByArrayOfPositions(positions:PositionRowColumn[]):Cell[] {
+    const cells:Cell[] = []
+    for (const position of positions) {
+      cells.push(this.#getCellByPosition(position))
+    }
+    return cells
+  }
+
+  getAllPositionsOnBoardAsArray():PositionRowColumn[] {
+    const positions:PositionRowColumn[] = []
+    for (let row = 1; row <= this.#matrixSize.rowsSize; row++) {
+      for (let column = 1; column <= this.#matrixSize.columnsSize; column++) {
+        positions.push(new PositionRowColumn(row, column))
+      }
+    }
+    return positions
   }
 
   #createRowOfCells (row:number):HTMLElement {
@@ -240,6 +290,10 @@ export class GameBoard{
 
   #isCellOnBoard(cell:Cell):boolean {
     return this.isRowColumnOnBoard(cell.position.row, cell.position.column)
+  }
+
+  #getAllCells():Cell[]{
+    return this.#cells
   }
 }
 

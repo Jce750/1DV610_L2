@@ -3,6 +3,7 @@
  */
 import { GameBoard } from "../GameBoard";
 import { MatrixAnalyzer } from "../MatrixAnalyzer";
+import { PositionRowColumn } from "../PositionRowColumn";
 describe.skip('GameBoard', () => {
   let gameboard:GameBoard
   const mockHandleClickEvent = jest.fn()
@@ -42,11 +43,6 @@ describe.skip('GameBoard', () => {
     expect(() => gameboard.getCellElementRowCol(0,1)).toThrow('row or column out of range')
   })
 
-  it ('should return all cells', () => {
-    const cells = gameboard.allCells
-    expect(cells.length).toBe(25)
-  })
-
   it ('should return a cell element value for a given row and column', () => {
     gameboard.getCellElementRowCol(1,1).innerText = 'X'
     const cellElementValue = gameboard.getCellElementValueRowCol(1,1)
@@ -54,7 +50,8 @@ describe.skip('GameBoard', () => {
   })
 
   it ('should count the number of cells that have been clicked', () => {
-    gameboard.addClickEventToCells(gameboard.allCells, mockHandleClickEvent)
+    let positions:PositionRowColumn[] = gameboard.getAllPositionsOnBoardAsArray()
+    gameboard.addClickEventToCells(positions, mockHandleClickEvent)
     gameboard.cellElements.forEach(cell => {
       cell.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     });
@@ -156,5 +153,4 @@ describe.skip('GameBoard', () => {
     const longestLine = mxa.getLongestMatchingLineIntersectingCell(cell)
     expect(longestLine.length).toBe(4)
   })
-
 })
