@@ -4,6 +4,7 @@ import { CellSizeWidthHeight } from './CellSizeWidthHeight'
 export class Cell {
   #position: PositionRowColumn = new PositionRowColumn(1,1)
   #cellSize: CellSizeWidthHeight = new CellSizeWidthHeight(10,10)
+  #value: string = ''
   #cellElement: HTMLElement = document.createElement('div')
   #eventHandler: (event: MouseEvent) => void = (event: MouseEvent) => {}
 
@@ -11,6 +12,10 @@ export class Cell {
     this.#position = position
     this.#cellSize = cellSize
     this.#cellElement = this.#createCell()
+  }
+
+  get value():string{
+    return this.#cellElement.innerText
   }
 
   get position():PositionRowColumn{
@@ -27,6 +32,10 @@ export class Cell {
 
   get eventHandler():(event: MouseEvent) => void{
     return this.#eventHandler
+  }
+
+  set value(value:string){
+    this.#cellElement.innerText = value
   }
 
   set position(position:PositionRowColumn){
@@ -48,9 +57,10 @@ export class Cell {
     cell.setAttribute('data-row', this.#position.row.toString())
     cell.style.width = `${this.#cellSize.width}px`
     cell.style.height = `${this.#cellSize.height}px`
-    cell.innerText = ''
+    cell.innerText = this.#value
     return cell
   }
+
   addClickEventListener(onclick: ((event: MouseEvent) => void)):void{
     this.#cellElement.addEventListener('click', onclick)
     this.#eventHandler = onclick

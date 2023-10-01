@@ -210,4 +210,4 @@ Position default: rows = 1, column = 1
 
 ## Todo:s
 
-As of now the library is completely devoted for use with HTML. The library should fully cut the bonds to the view and focus on game-service. The create HTML-board method can still be a feature, but the library must not rely on HTML but rather keep data separate. I also have public methods and properties that expose objects. I must encapsulate.
+As of now the library is completely devoted for use with HTML. The library should fully cut the bonds to the view and focus on game-service. The create HTML-board method can still be a feature, but the library must not rely on HTML but rather keep data separate.

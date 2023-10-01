@@ -1,3 +1,5 @@
+import { ValidatorNumber } from "./ValidatorNumber";
+import { ValidatorRange } from "./ValidatorRange";
 
 /**
  * A class to represent a range of positive integers.
@@ -22,18 +24,9 @@ export class RangeMinMax{
   }
 
   #validateInput(min: number, max: number):void{
-    if(!Number.isFinite(min) || !Number.isFinite(max)){
-      throw new Error('min and max must be finite numbers');
-    }
-    if(min <= 0 || max <= 0){
-      throw new Error('min and max must be greater than 0');
-    }
-    if(min >= max){
-      throw new Error('min must be less than or equal to max');
-    }
-    if(!Number.isInteger(min) || !Number.isInteger(max)){
-      throw new Error('min and max must be integers');
-    }
+    new ValidatorNumber(min).checkFinite()
+    new ValidatorNumber(max).checkFinite()
+    new ValidatorRange().checkMinLessThanMax(min, max)
   }
 
   checkValueInRange(value: number):boolean{

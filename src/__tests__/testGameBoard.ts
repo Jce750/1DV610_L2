@@ -27,11 +27,11 @@ describe('GameBoard', () => {
   })
 
   it ('should contain a gameboard element', () => {
-    expect(gameboard.element).toBeTruthy()
+    expect(gameboard.htmlElement).toBeTruthy()
   })
 
   it ('should contain 25 HTMLElements', () => {
-    expect(gameboard.cellElements.length).toBe(25)
+    expect(gameboard.cellHtmlElements.length).toBe(25)
   })
 
   it ('should return a cell element for a given row and column', () => {
@@ -57,7 +57,7 @@ describe('GameBoard', () => {
   it ('should count the number of cells that have been clicked', () => {
     let positions:PositionRowColumn[] = gameboard.getAllPositionsOnBoardAsArray()
     gameboard.addClickEventToCells(positions, mockHandleClickEvent)
-    gameboard.cellElements.forEach(cell => {
+    gameboard.cellHtmlElements.forEach(cell => {
       cell.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     });
     expect(mockHandleClickEvent).toHaveBeenCalledTimes(25); // 5x5 = 25 cells

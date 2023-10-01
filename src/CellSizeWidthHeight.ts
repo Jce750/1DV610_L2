@@ -1,12 +1,12 @@
-import {validator} from './Validator'
+import {ValidatorNumber} from './ValidatorNumber'
 
 export class CellSizeWidthHeight {
   #width:number = 20
   #height:number = 20
   
   constructor(public pixelWidth:number = 20,public pixelHeight:number = 20) {
-    new validator(pixelWidth).isPositive().isFinite().isInteger()
-    new validator(pixelHeight).isPositive().isFinite().isInteger()
+    new ValidatorNumber(pixelWidth).checkPositive().checkFinite().checkInteger()
+    new ValidatorNumber(pixelHeight).checkPositive().checkFinite().checkInteger()
     this.width = pixelWidth
     this.height = pixelHeight
   }
@@ -18,9 +18,11 @@ export class CellSizeWidthHeight {
     return this.#height
   }
   set width(width:number){
+    new ValidatorNumber(width).checkPositive().checkFinite().checkInteger()
     this.#width = width
   }
   set height(height:number){
+    new ValidatorNumber(height).checkPositive().checkFinite().checkInteger()
     this.#height = height
   }
 }

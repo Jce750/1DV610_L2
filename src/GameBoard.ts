@@ -5,6 +5,8 @@ import { PositionRowColumn } from './PositionRowColumn'
 import { MatrixAnalyzer } from './MatrixAnalyzer'
 import { RangeMinMax } from './RangeMinMax'
 import { Limits } from './Limits'
+import { Point2D } from './Point2D'
+import { Matrix2D } from './Matrix2D'
 
 /**
  * The GameBoard class is where the public API for the game board is defined.
@@ -13,10 +15,10 @@ import { Limits } from './Limits'
  */
 export class GameBoard{
 
-  #matrixSize:MatrixSizeRowsCols
   #cellSize:CellSizeWidthHeight
   #gameBoardElement:HTMLElement = document.createElement('div')
   #cells:Cell[] = []
+  #gameBoard:Matrix2D
 
  /**
   * The constructor builds a game board with the specified number of rows and columns
@@ -28,9 +30,9 @@ export class GameBoard{
   * @memberof GameBoard
   */
   constructor(rows:number,columns:number){
+    this.#gameBoard = new Matrix2D(new MatrixSizeRowsCols(rows,columns))
     new RangeMinMax(Limits.MinRows, Limits.MaxRows).checkValueInRange(rows)
     new RangeMinMax(Limits.MinColumns,Limits.MaxColumns).checkValueInRange(columns)
-    this.#matrixSize = new MatrixSizeRowsCols(rows,columns)
     this.#cellSize = new CellSizeWidthHeight(10,10)
     this.#createGameBoard()
   }
@@ -44,7 +46,7 @@ export class GameBoard{
    * @returns {MatrixSizeRowsCols} {rowsSize: number, columnsSize: number}
    */
   get size():MatrixSizeRowsCols{
-    return this.#matrixSize
+    return this.#gameBoard.size
   }
 
   /**
@@ -68,11 +70,17 @@ export class GameBoard{
    * @memberof GameBoard
    * @returns {HTMLElement}
    */
-  get element():HTMLElement{
+  get htmlElement():HTMLElement{
+    if(!this.#gameBoardElement){
+      throw new Error('game board element not found')
+    }
     return this.#gameBoardElement
   }
 
-  get cellElements():NodeListOf<Element>{
+  get cellHtmlElements():NodeListOf<Element>{
+    if(!this.#gameBoardElement){
+      throw new Error('game board element not found')
+    }
     return this.#gameBoardElement.querySelectorAll('.cell')
   }
 
@@ -190,11 +198,11 @@ export class GameBoard{
    * @returns {HTMLElement[]} - An array of aligned HTMLElements with equal inner text values
    * @memberof GameBoard
    */
-  getLongestCellElementLineOfValueMatchIntersectingCell(currentCell:HTMLElement):HTMLElement[]{
+  getLongestCellElementLineOfValueMatchIntersectingCell(currentCell:Point2D):Point2D[]{
     if (!this.#isCellElementOnBoard(currentCell)) {
       return []
     }
-    const mxa = new MatrixAnalyzer(this)
+    
     return mxa.getLongestMatchingLineIntersectingCell(currentCell)
   }
 
@@ -223,13 +231,13 @@ export class GameBoard{
     return false
   }
 
-  #createGameBoard():void {
+  createGameBoardHTML():HTMLElement {
     const gameBoardElement = document.createElement('div')
     gameBoardElement.classList.add('gameboard')
     for (let row = 1; row <= this.#matrixSize.rowsSize; row++) {
       gameBoardElement.appendChild(this.#createRowOfCells(row))
     }
-    this.#gameBoardElement = gameBoardElement
+    return gameBoardElement
   }
 
   #getCellByRowColumn(row:number, column:number):Cell {
@@ -240,9 +248,7 @@ export class GameBoard{
     return cell
   }
 
-  #getCellByPosition(position:PositionRowColumn):Cell {
-    return this.#getCellByRowColumn(position.row, position.column)
-  }
+
 
   #getCellsByArrayOfPositions(positions:PositionRowColumn[]):Cell[] {
     const cells:Cell[] = []
@@ -252,13 +258,18 @@ export class GameBoard{
     return cells
   }
 
-  #createRowOfCells (row:number):HTMLElement {
+  #createRowOfHTMLElementCells (row:number):HTMLElement {
     const rowElement = document.createElement('div')
     for (let col = 1; col <= this.#matrixSize.columnsSize; col++) {
       const cell = this.#createCell(new PositionRowColumn(row,col))
       rowElement.appendChild(cell.CellElement)
     }
     return rowElement
+  }
+
+  #createGameBoard():void {
+    this.#gameBoard = 
+    this.#cells = 
   }
 
   #createCell(position: PositionRowColumn):Cell {
