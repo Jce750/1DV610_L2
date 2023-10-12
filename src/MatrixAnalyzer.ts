@@ -32,7 +32,7 @@ export class MatrixAnalyzer{
   }
 
   #getMatchesInSpecifiedDirection(currentPointXY:Point2D, direction:Transform2D):Point2D[] {
-    const startPosition = new PositionRowColumn(currentPointXY.x, currentPointXY.y)
+    const startPosition = currentPointXY
     const currentCell = this.#gameboard.getCellAtPosition(startPosition)
     let currentPosition = startPosition
     let matchingPositions:Point2D[] = []
@@ -40,10 +40,10 @@ export class MatrixAnalyzer{
     if (this.#isCellNeighborInDirectionOnBoard(currentPosition, direction)) {
       currentPosition = this.getNextCellPositionInDirection(currentPosition, direction)
       while (
-        this.#isRowColumnOnBoard(currentPosition) &&
+        this.#isPositionInMatrixBoundaries(currentPosition) &&
         this.#gameboard.getCellAtPosition(currentPosition).value === currentCell.value
       ) {
-        matchingPositions.push(new Point2D(currentPosition.row,currentPosition.column))
+        matchingPositions.push(new Point2D(currentPosition.y,currentPosition.x))
         currentPosition = this.getNextCellPositionInDirection(currentPosition, direction)
       }
     }
@@ -52,26 +52,26 @@ export class MatrixAnalyzer{
 
 
 
-  getCurrentCellElementPosition(currentCell:HTMLElement):PositionRowColumn {
+  getCurrentCellElementPosition(currentCell:HTMLElement):Point2D {
     const row = Number(currentCell.dataset.row)
     const column = Number(currentCell.dataset.col)
-    return new PositionRowColumn(row,column)
+    return new Point2D(row,column)
   }
 
-  getNextCellPositionInDirection(position:PositionRowColumn, direction:Transform2D):PositionRowColumn {
-    const row = position.row + direction.x
-    const column = position.column + direction.y
-    return new PositionRowColumn(row,column)
+  getNextCellPositionInDirection(position:Point2D, direction:Transform2D):Point2D {
+    const row = position.y + direction.y
+    const column = position.x + direction.x
+    return new Point2D(row,column)
   }
 
-  #isRowColumnOnBoard(position:PositionRowColumn):boolean{
-    return position.row >= 1 && position.row <= this.#gameboard.size.rowsSize &&
-      position.column >= 1 && position.column <= this.#gameboard.size.columnsSize
+  #isPositionInMatrixBoundaries(position:Point2D):boolean{
+    return position.y >= 1 && position.y <= this.#gameboard.size.rows &&
+      position.x >= 1 && position.x <= this.#gameboard.size.columns
   }
 
-  #isCellNeighborInDirectionOnBoard(position:PositionRowColumn, direction:Transform2D):boolean {
-    const row = position.row + direction.x
-    const column = position.column + direction.y
-    return this.#isRowColumnOnBoard(new PositionRowColumn(row, column))
+  #isCellNeighborInDirectionOnBoard(position:Point2D, direction:Transform2D):boolean {
+    const row = position.y + direction.y
+    const column = position.x + direction.x
+    return this.#isPositionInMatrixBoundaries(new Point2D(row, column))
   }
 }

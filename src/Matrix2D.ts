@@ -1,5 +1,6 @@
 import { Cell } from "./Cell"
 import { MatrixSizeRowsCols } from "./MatrixSizeRowsCols"
+import { Point2D } from "./Point2D"
 import { PositionRowColumn } from "./PositionRowColumn"
 import { ValidatorMatrix } from "./ValidatorMatrix"
 
@@ -13,6 +14,7 @@ export class Matrix2D {
 
   constructor(size:MatrixSizeRowsCols) {
     this.size = size
+
   }
 
   get size() {
@@ -23,10 +25,14 @@ export class Matrix2D {
     this.#size = newSize
   }
 
-  getCellAtPosition(position: PositionRowColumn): Cell {
+  addCell(cell:Cell) {
+    this.#cells.push(cell)
+  }
+
+  getCellAtPosition(position: Point2D): Cell {
     new ValidatorMatrix().checkPositionExistInMatrix(position, this.#size);
     const foundCell = this.#cells.find(cell =>
-      cell.position.row === position.row && cell.position.column === position.column
+      cell.position.row === position.y && cell.position.column === position.x
     );
     if (!foundCell) {
       throw new Error('Cell not found');
@@ -41,4 +47,5 @@ export class Matrix2D {
     }
     return cell
   }
+
 }

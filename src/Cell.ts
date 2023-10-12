@@ -8,10 +8,12 @@ export class Cell {
   #cellElement: HTMLElement = document.createElement('div')
   #eventHandler: (event: MouseEvent) => void = (event: MouseEvent) => {}
 
-  constructor(position: PositionRowColumn, cellSize: CellSizeWidthHeight){
+  constructor(position: PositionRowColumn, cellSize?: CellSizeWidthHeight){
     this.#position = position
-    this.#cellSize = cellSize
-    this.#cellElement = this.#createCell()
+    if(cellSize) {
+      this.#cellSize = cellSize
+    }
+    this.#cellElement = this.#createHtmlCell()
   }
 
   get value():string{
@@ -50,15 +52,23 @@ export class Cell {
     this.#eventHandler = eventHandler
   }
 
-  #createCell():HTMLElement {
-    const cell = document.createElement('div')
-    cell.classList.add('cell') // Add a class for styling
-    cell.setAttribute('data-col', this.#position.column.toString())
-    cell.setAttribute('data-row', this.#position.row.toString())
-    cell.style.width = `${this.#cellSize.width}px`
-    cell.style.height = `${this.#cellSize.height}px`
-    cell.innerText = this.#value
-    return cell
+  #createHtmlCell():HTMLElement {
+    const htmlCell = document.createElement('div')
+    htmlCell.classList.add('cell') // Add a class for styling
+    htmlCell.setAttribute('data-col', this.#position.column.toString())
+    htmlCell.setAttribute('data-row', this.#position.row.toString())
+    htmlCell.style.width = `${this.#cellSize.width}px`
+    htmlCell.style.height = `${this.#cellSize.height}px`
+    htmlCell.innerText = this.#value
+    return htmlCell
+  }
+
+  createCellFromHtmlCellElement(cellElement:HTMLElement):Cell{
+    const row = Number(cellElement.dataset.row)
+    const column = Number(cellElement.dataset.col)
+    const position = new PositionRowColumn(row, column)
+    const cellSize = new CellSizeWidthHeight(cellElement.offsetWidth, cellElement.offsetHeight)
+    return new Cell(position, cellSize)
   }
 
   addClickEventListener(onclick: ((event: MouseEvent) => void)):void{

@@ -231,14 +231,7 @@ export class GameBoard{
     return false
   }
 
-  createGameBoardHTML():HTMLElement {
-    const gameBoardElement = document.createElement('div')
-    gameBoardElement.classList.add('gameboard')
-    for (let row = 1; row <= this.#matrixSize.rowsSize; row++) {
-      gameBoardElement.appendChild(this.#createRowOfCells(row))
-    }
-    return gameBoardElement
-  }
+
 
   #getCellByRowColumn(row:number, column:number):Cell {
     const cell = this.#cells.find(cell => cell.position.row === row && cell.position.column === column)
@@ -265,11 +258,6 @@ export class GameBoard{
       rowElement.appendChild(cell.CellElement)
     }
     return rowElement
-  }
-
-  #createGameBoard():void {
-    this.#gameBoard = 
-    this.#cells = 
   }
 
   #createCell(position: PositionRowColumn):Cell {

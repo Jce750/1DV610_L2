@@ -13,8 +13,8 @@ describe('GameBoard', () => {
   })
 
   it ('should create a gameboard with 5 rows and 5 columns', () => {
-    expect(gameboard.size.rowsSize).toBe(5)
-    expect(gameboard.size.columnsSize).toBe(5)
+    expect(gameboard.size.rows).toBe(5)
+    expect(gameboard.size.columns).toBe(5)
   })
 
   it ('should throw an error if rows is less than 1', () => {

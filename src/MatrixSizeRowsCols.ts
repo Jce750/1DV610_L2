@@ -5,24 +5,24 @@ export class MatrixSizeRowsCols {
   #columns:number = 5
 
   constructor(rows:number = 5, columns:number = 5){
-    this.rowsSize = rows
-    this.columnsSize = columns
+    this.rows = rows
+    this.columns = columns
   }
 
-  get rowsSize():number{
+  get rows():number{
     return this.#rows
   }
 
-  get columnsSize():number{
+  get columns():number{
     return this.#columns
   }
 
-  set rowsSize(rows:number){
+  set rows(rows:number){
       new ValidatorNumber(rows).checkPositive().checkFinite().checkInteger()
       this.#rows = rows
   }
 
-  set columnsSize(columns:number){
+  set columns(columns:number){
     new ValidatorNumber(columns).checkPositive().checkFinite().checkInteger()
     this.#columns = columns
   }
