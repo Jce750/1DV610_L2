@@ -1,12 +1,8 @@
-import { Cell } from "./Cell"
-import { GameBoard } from "./GameBoard"
+import { Limits } from "./Limits"
 import { Matrix2D } from "./Matrix2D"
 import { Point2D } from "./Point2D"
 import { PositionRowColumn } from "./PositionRowColumn"
-import { RangeMinMax } from "./RangeMinMax"
-import { Rotation } from "./Rotation"
-import { Scale2D } from "./Scale2D"
-import { Transform } from "./Transform"
+import { Transform2D } from "./Transform"
 
 export class MatrixAnalyzer{
 
@@ -16,35 +12,17 @@ export class MatrixAnalyzer{
     this.#gameboard = gameboard
   }
 
-  // #get():Transform[]{
-  //   for (let degree = 0; degree < 360; degree += 45) {
-  //     const vectors:Transform[] = new Transform(new Point(0,0), new Rotation(degree), new Scale(1,1))
-  //   }
-  //   const right = new Transform([0, 1])
-  //   const horizontal = [left, right]
-  //   const up = [-1, 0]
-  //   const down = [1, 0]
-  //   const vertical = [up, down]
-  //   const downleft = [1, -1]
-  //   const upright = [-1, 1]
-  //   const downLeftToUpRight = [downleft, upright]
-  //   const downRight = [1, 1]
-  //   const upLeft = [-1, -1]
-  //   const upLeftToDownRight = [upLeft, downRight]
-  //   return [horizontal, vertical, downLeftToUpRight, upLeftToDownRight]
-  // }
-
   getLongestMatchingLineIntersectingCell(currentPointXY:Point2D):Point2D[] {
-    const vectors = new Transform(currentPointXY, new Rotation(0), new Scale2D(1,1))
+    const vectors = new Transform2D(currentPointXY)
     // get vectors for 0, 45, 90, 135, 180, 225, 270, 315 degrees
-    const directions = vectors.getVectorsStepDegrees(new RangeMinMax(0,360), 45).map(vector => vector.point)
+    const searchDirections = vectors.getVectorsStepDegrees(Limits.EightDirections)
     let longestLineOfMatches:Point2D[] = []
     let positiveDirection:Point2D[]
     let negativeDirection:Point2D[]
     let longestSoFar:Point2D[]
-    for (const direction of directions) {
+    for (const direction of searchDirections) {
       positiveDirection = this.#getMatchesInSpecifiedDirection(currentPointXY, direction)
-      negativeDirection = this.#getMatchesInSpecifiedDirection(currentPointXY, direction.invertVector())
+      negativeDirection = this.#getMatchesInSpecifiedDirection(currentPointXY, direction.getInvertedCopy())
       longestSoFar = [...positiveDirection, currentPointXY, ...negativeDirection]
       if (longestSoFar.length > longestLineOfMatches.length) {
         longestLineOfMatches = longestSoFar
@@ -53,7 +31,7 @@ export class MatrixAnalyzer{
     return longestLineOfMatches;
   }
 
-  #getMatchesInSpecifiedDirection(currentPointXY:Point2D, direction:Point2D):Point2D[] {
+  #getMatchesInSpecifiedDirection(currentPointXY:Point2D, direction:Transform2D):Point2D[] {
     const startPosition = new PositionRowColumn(currentPointXY.x, currentPointXY.y)
     const currentCell = this.#gameboard.getCellAtPosition(startPosition)
     let currentPosition = startPosition
@@ -80,7 +58,7 @@ export class MatrixAnalyzer{
     return new PositionRowColumn(row,column)
   }
 
-  getNextCellPositionInDirection(position:PositionRowColumn, direction:Point2D):PositionRowColumn {
+  getNextCellPositionInDirection(position:PositionRowColumn, direction:Transform2D):PositionRowColumn {
     const row = position.row + direction.x
     const column = position.column + direction.y
     return new PositionRowColumn(row,column)
@@ -91,7 +69,7 @@ export class MatrixAnalyzer{
       position.column >= 1 && position.column <= this.#gameboard.size.columnsSize
   }
 
-  #isCellNeighborInDirectionOnBoard(position:PositionRowColumn, direction:Point2D):boolean {
+  #isCellNeighborInDirectionOnBoard(position:PositionRowColumn, direction:Transform2D):boolean {
     const row = position.row + direction.x
     const column = position.column + direction.y
     return this.#isRowColumnOnBoard(new PositionRowColumn(row, column))

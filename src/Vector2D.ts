@@ -1,6 +1,6 @@
 import { Point2D } from "./Point2D";
 
-export class Vector {
+export class Vector2D {
 
   #point1:Point2D;
   #point2:Point2D;
@@ -12,10 +12,7 @@ export class Vector {
     this.#vector = new Point2D(point2.x - point1.x, point2.y - point1.y);
   }
 
-  normalize(): Vector {
-    const length = Math.sqrt(this.#vector.x ** 2 + this.#vector.y ** 2);
-    return new Vector(new Point2D(this.#vector.x / length, this.#vector.y / length), new Point2D(0, 0));
-  }
+
 
   public invertVector():Point2D {
     const newPoint:Point2D = new Point2D(-this.#vector.x, -this.#vector.y)
