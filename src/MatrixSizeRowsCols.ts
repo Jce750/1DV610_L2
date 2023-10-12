@@ -1,5 +1,3 @@
-//TODO: add setter validation
-
 import { ValidatorNumber } from "./ValidatorNumber"
 
 export class MatrixSizeRowsCols {

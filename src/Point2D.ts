@@ -1,25 +1,13 @@
 import { ValidatorNumber } from "./ValidatorNumber"
 
 export class Point2D {
-    #xPosition:number = 0
-    #yPosition:number = 0
+    readonly xPosition:number = 0
+    readonly yPosition:number = 0
   constructor(public x:number, public y:number) {
+    new ValidatorNumber(x).checkFinite()
+    new ValidatorNumber(y).checkFinite()
     this.xPosition = x
     this.yPosition = y
-  }
-  get xPosition() {
-    return this.#xPosition
-  }
-  get yPosition() {
-    return this.#yPosition
-  }
-  set xPosition(newX:number) {
-    new ValidatorNumber(newX).checkFinite()
-    this.#xPosition = newX
-  }
-  set yPosition(newY:number) {
-    (new ValidatorNumber(newY)).checkFinite()
-    this.#yPosition = newY
   }
 
   normalize(): Point2D {
