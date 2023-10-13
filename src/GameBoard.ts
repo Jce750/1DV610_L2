@@ -4,7 +4,7 @@ import { Cell } from './Cell'
 import { PositionRowColumn } from './PositionRowColumn'
 import { MatrixAnalyzer } from './MatrixAnalyzer'
 import { RangeMinMax } from './RangeMinMax'
-import { Limits } from './Limits'
+import { MagicData } from './MagicData'
 import { Point2D } from './Point2D'
 import { Matrix2D } from './Matrix2D'
 
@@ -31,95 +31,9 @@ export class GameBoard{
   */
   constructor(rows:number,columns:number){
     this.#gameBoard = new Matrix2D(new MatrixSizeRowsCols(rows,columns))
-    new RangeMinMax(Limits.MinRows, Limits.MaxRows).checkValueInRange(rows)
-    new RangeMinMax(Limits.MinColumns,Limits.MaxColumns).checkValueInRange(columns)
     this.#cellSize = new CellSizeWidthHeight(10,10)
-    this.#createGameBoard()
   }
 
-  /**
-   * Once created the game board cannot be resized in terms of rows and columns.
-   * 1-based indexing is used for rows and columns.
-   *
-   * @readonly
-   * @memberof GameBoard
-   * @returns {MatrixSizeRowsCols} {rowsSize: number, columnsSize: number}
-   */
-  get size():MatrixSizeRowsCols{
-    return this.#gameBoard.size
-  }
-
-  /**
-   * Returns the current cell size. Also note that the cell size can be adjusted.
-   * The validation is rudimentary, leaving it up to the caller
-   * to ensure that the cell size is suitable for the implementation.
-   *
-   * @memberof GameBoard
-   * @param {number} width - The width of the cell in pixels
-   * @param {number} height - The height of the cell in pixels
-   * @returns {CellSizeWidthHeight} {width: number, height: number}
-   */
-  get cellSize():CellSizeWidthHeight{
-    return this.#cellSize
-  }
-
-  /**
-   * Returns the HTML-element representing the gameboard.
-   *
-   * @readonly
-   * @memberof GameBoard
-   * @returns {HTMLElement}
-   */
-  get htmlElement():HTMLElement{
-    if(!this.#gameBoardElement){
-      throw new Error('game board element not found')
-    }
-    return this.#gameBoardElement
-  }
-
-  get cellHtmlElements():NodeListOf<Element>{
-    if(!this.#gameBoardElement){
-      throw new Error('game board element not found')
-    }
-    return this.#gameBoardElement.querySelectorAll('.cell')
-  }
-
-  /**
-   * Returns a single HTMLelement representation of a cell at a row and column.
-   * 1-based indexing is used for rows and columns.
-   *
-   * @param {number} row - The row of the cell
-   * @param {number} col - The column of the cell
-   * @returns {HTMLElement}
-   * @memberof GameBoard
-   * @throws {Error} - If row or column is out of range
-   * @throws {Error} - If element is not found
-   */
-  getCellElementRowCol(row:number,col:number):HTMLElement{
-    if (row < 1 || row > this.#matrixSize.rowsSize || col < 1 || col > this.#matrixSize.columnsSize) {
-      throw new Error('row or column out of range')
-    }
-    let element = this.#gameBoardElement.querySelector(`[data-row="${row}"][data-col="${col}"]`)
-    if(!element){
-      throw new Error('element not found')
-    }
-    return element as HTMLElement
-  }
-
-  /**
-   * Return the html inner text value of a cell at a row and column.
-   * 1-based indexing is used for rows and columns.
-   *
-   * @param {number} row - The row of the cell
-   * @param {number} col - The column of the cell
-   * @returns {string} - The inner text value of the cell
-   * @memberof GameBoard
-   * @throws {Error} - If row or column is out of range
-   * @throws {Error} - If element is not found
-   */
-  getCellElementValueRowCol(row:number,col:number):string{
-    return this.getCellElementRowCol(row,col).innerText
-  }
 
   /**
    * Use this to attach a click event to a specific range of cell elements.
@@ -169,24 +83,7 @@ export class GameBoard{
       column >= 1 && column <= this.#matrixSize.columnsSize
   }
 
-  /**
-   * Using this will change the size of all the cells on the game board.
-   * The validation is rudimentary, leaving it up to the caller
-   * to ensure that the cell size is suitable for the implementation.
-   *
-   * @param {number} width - The width of the cell in pixels
-   * @param {number} height - The height of the cell in pixels
-   * @memberof GameBoard
-   * @throws {Error} - If width or height is not a positive integer
-   * @throws {Error} - If width or height is not a finite number
-   * @throws {Error} - If width or height is not a number
-   */
-  updateCellWidthHeight(width:number,height:number):void {
-      for(const cell of this.#gameBoardElement.querySelectorAll('.cell')) {
-        (cell as HTMLElement).style.width = `${width}px` as string
-        (cell as HTMLElement).style.height = `${height}px` as string
-      }
-  }
+
 
   /**
    * Looks along the horisontal, vertical and diagonal lines of the game board
@@ -233,46 +130,10 @@ export class GameBoard{
 
 
 
-  #getCellByRowColumn(row:number, column:number):Cell {
-    const cell = this.#cells.find(cell => cell.position.row === row && cell.position.column === column)
-    if (!cell) {
-      throw new Error('cell not found')
-    }
-    return cell
-  }
+  // #isCellOnBoard(cell:Cell):boolean {
+  //   return this.isRowColumnOnBoard(cell.position.row, cell.position.column)
+  // }
 
-
-
-  #getCellsByArrayOfPositions(positions:PositionRowColumn[]):Cell[] {
-    const cells:Cell[] = []
-    for (const position of positions) {
-      cells.push(this.#getCellByPosition(position))
-    }
-    return cells
-  }
-
-  #createRowOfHTMLElementCells (row:number):HTMLElement {
-    const rowElement = document.createElement('div')
-    for (let col = 1; col <= this.#matrixSize.columnsSize; col++) {
-      const cell = this.#createCell(new PositionRowColumn(row,col))
-      rowElement.appendChild(cell.CellElement)
-    }
-    return rowElement
-  }
-
-  #createCell(position: PositionRowColumn):Cell {
-    const cell = new Cell(position,this.#cellSize)
-    this.#cells.push(cell)
-    return cell
-  }
-
-  #isCellOnBoard(cell:Cell):boolean {
-    return this.isRowColumnOnBoard(cell.position.row, cell.position.column)
-  }
-
-  #getAllCells():Cell[]{
-    return this.#cells
-  }
 }
 
 

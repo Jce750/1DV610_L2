@@ -1,21 +1,26 @@
 import { Cell } from "./Cell";
 import { CellSizeWidthHeight } from "./CellSizeWidthHeight";
+import { MagicData } from "./MagicData";
 import { Matrix2D } from "./Matrix2D";
 import { MatrixSizeRowsCols } from "./MatrixSizeRowsCols";
 import { PositionRowColumn } from "./PositionRowColumn";
+import { RangeMinMax } from "./RangeMinMax";
 
 export class Matrix2DFactory {
 
   buildMatrix2DfromScratch(size: MatrixSizeRowsCols): Matrix2D {
-    const matrix = new Matrix2D(size);
+    const { rows, columns } = size;
+    new RangeMinMax(MagicData.MinRows, MagicData.MaxRows).checkValueInRange(rows)
+    new RangeMinMax(MagicData.MinColumns,MagicData.MaxColumns).checkValueInRange(columns)
+    const cells:Cell[] = [];
     for (let row = 0; row < size.rows; row++) {
       for (let column = 0; column < size.columns; column++) {
         const position = new PositionRowColumn(row, column);
         const cell = new Cell(position);
-        matrix.addCell(cell);
+        cells.push(cell);
       }
     }
-    return matrix;
+    return new Matrix2D(size, cells);
   }
 
   buildMatrix2DFromHtml(gameBoardElement: HTMLElement): Matrix2D {
@@ -23,8 +28,7 @@ export class Matrix2DFactory {
     const cells = this.createCellsFromHtmlCellElements([...cellNodeList] as HTMLElement[]);  // Convert NodeList to Array
     const size = new MatrixSizeRowsCols(this.getMaxRow(cells) + 1, this.getMaxCol(cells) + 1);  // Assuming rows and columns are 0-indexed
     const matrix = new Matrix2D(size);
-    this.addCellsToMatrix(matrix, cells);
-    return matrix;
+    return new Matrix2D(size, cells);
   }
 
   createCellsFromHtmlCellElements(cellElements: HTMLElement[]): Cell[] {
@@ -56,11 +60,5 @@ export class Matrix2DFactory {
 
   private getMaxCol(cells: Cell[]): number {
     return cells.reduce((maxCol, cell) => Math.max(maxCol, cell.position.column), -1);
-  }
-
-  addCellsToMatrix(matrix:Matrix2D, cells:Cell[]) {
-    cells.forEach((cell) => {
-      matrix.addCell(cell);
-    });
   }
 }

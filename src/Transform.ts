@@ -1,4 +1,4 @@
-import { Limits } from "./Limits";
+import { MagicData } from "./MagicData";
 import { Point2D } from "./Point2D";
 import { RangeMinMax } from "./RangeMinMax";
 import { Rotation } from "./Rotation";
@@ -33,7 +33,7 @@ export class Transform2D {
   // Staticisch
   public getVectorsStepDegrees(step:number):Transform2D[]{
     const vectors:Transform2D[] = []
-    for (let degree = 0; degree < Limits.FullCircle; degree += step) {
+    for (let degree = 0; degree < MagicData.FullCircle; degree += step) {
       [...vectors, this.createNormalizedDirectionVector(degree)]
     }
     return vectors

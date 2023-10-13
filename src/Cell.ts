@@ -1,7 +1,7 @@
 import { PositionRowColumn } from './PositionRowColumn'
 import { CellSizeWidthHeight } from './CellSizeWidthHeight'
 
-export class Cell {
+export class Cell{
   #position: PositionRowColumn = new PositionRowColumn(1,1)
   #cellSize: CellSizeWidthHeight = new CellSizeWidthHeight(10,10)
   #value: string = ''
@@ -52,16 +52,7 @@ export class Cell {
     this.#eventHandler = eventHandler
   }
 
-  #createHtmlCell():HTMLElement {
-    const htmlCell = document.createElement('div')
-    htmlCell.classList.add('cell') // Add a class for styling
-    htmlCell.setAttribute('data-col', this.#position.column.toString())
-    htmlCell.setAttribute('data-row', this.#position.row.toString())
-    htmlCell.style.width = `${this.#cellSize.width}px`
-    htmlCell.style.height = `${this.#cellSize.height}px`
-    htmlCell.innerText = this.#value
-    return htmlCell
-  }
+
 
   createCellFromHtmlCellElement(cellElement:HTMLElement):Cell{
     const row = Number(cellElement.dataset.row)

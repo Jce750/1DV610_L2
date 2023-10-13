@@ -1,8 +1,10 @@
-import { Limits } from "./Limits"
+import { Cell } from "./Cell"
+import { MagicData } from "./MagicData"
 import { Matrix2D } from "./Matrix2D"
 import { Point2D } from "./Point2D"
 import { PositionRowColumn } from "./PositionRowColumn"
 import { Transform2D } from "./Transform"
+import { ValidatorMatrix } from "./ValidatorMatrix"
 
 export class MatrixAnalyzer{
 
@@ -15,7 +17,7 @@ export class MatrixAnalyzer{
   getLongestMatchingLineIntersectingCell(currentPointXY:Point2D):Point2D[] {
     const vectors = new Transform2D(currentPointXY)
     // get vectors for 0, 45, 90, 135, 180, 225, 270, 315 degrees
-    const searchDirections = vectors.getVectorsStepDegrees(Limits.EightDirections)
+    const searchDirections = vectors.getVectorsStepDegrees(MagicData.EightDirections)
     let longestLineOfMatches:Point2D[] = []
     let positiveDirection:Point2D[]
     let negativeDirection:Point2D[]
@@ -33,7 +35,7 @@ export class MatrixAnalyzer{
 
   #getMatchesInSpecifiedDirection(currentPointXY:Point2D, direction:Transform2D):Point2D[] {
     const startPosition = currentPointXY
-    const currentCell = this.#gameboard.getCellAtPosition(startPosition)
+    const currentCell = this.#getCellAtPosition(startPosition)
     let currentPosition = startPosition
     let matchingPositions:Point2D[] = []
     // Get first neighbor in specified direction
@@ -41,7 +43,7 @@ export class MatrixAnalyzer{
       currentPosition = this.getNextCellPositionInDirection(currentPosition, direction)
       while (
         this.#isPositionInMatrixBoundaries(currentPosition) &&
-        this.#gameboard.getCellAtPosition(currentPosition).value === currentCell.value
+        this.#getCellAtPosition(currentPosition).value === currentCell.value
       ) {
         matchingPositions.push(new Point2D(currentPosition.y,currentPosition.x))
         currentPosition = this.getNextCellPositionInDirection(currentPosition, direction)
@@ -49,8 +51,6 @@ export class MatrixAnalyzer{
     }
     return matchingPositions;
   }
-
-
 
   getCurrentCellElementPosition(currentCell:HTMLElement):Point2D {
     const row = Number(currentCell.dataset.row)
@@ -73,5 +73,16 @@ export class MatrixAnalyzer{
     const row = position.y + direction.y
     const column = position.x + direction.x
     return this.#isPositionInMatrixBoundaries(new Point2D(row, column))
+  }
+
+  #getCellAtPosition(position: Point2D): Cell {
+    new ValidatorMatrix().checkPositionExistInMatrix(position, this.#gameboard.size);
+    const foundCell = this.#gameboard.cells.find(cell =>
+      cell.position.row === position.y && cell.position.column === position.x
+    );
+    if (!foundCell) {
+      throw new Error('Cell not found');
+    }
+    return foundCell;
   }
 }
