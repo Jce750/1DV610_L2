@@ -1,10 +1,13 @@
 import { MatrixSizeRowsCols } from "./MatrixSizeRowsCols"
 import { PositionRowColumn } from "./PositionRowColumn"
 import { IHtmlGameBoardFacade } from "./IHtmlGameBoardFacade"
-import { PointSelectionComposite } from "./PointSelectionComposite"
+import { PointsSelectionComposite } from "./PointsSelectionComposite"
 import { Point2D } from "./Point2D"
 import { MagicData } from "./MagicData"
 import { Matrix2D } from "./Matrix2D"
+import { CellSizeWidthHeight } from "./CellSizeWidthHeight"
+import { Matrix2DActions } from "./Matrix2DActions"
+import { IMatrix2DFacade } from "./IMatrix2DFacade"
 
 export class HtmlGameBoardActions implements IHtmlGameBoardFacade {
 
@@ -81,7 +84,7 @@ export class HtmlGameBoardActions implements IHtmlGameBoardFacade {
     return gameBoardElement.querySelectorAll('.cell')
   }
 
-  addClickEventToHtmlElementCells(selection:PointSelectionComposite, onclick: ((event: MouseEvent) => void), gameBoardHtmlElement:HTMLElement):void {
+  addClickEventToHtmlElementCells(selection:PointsSelectionComposite, onclick: ((event: MouseEvent) => void), gameBoardHtmlElement:HTMLElement):void {
     selection.forEach((point:Point2D) => {
       const {x,y} = point
       const position = new PositionRowColumn(y,x)
@@ -98,16 +101,15 @@ export class HtmlGameBoardActions implements IHtmlGameBoardFacade {
   }
 
   /**
-   * Using this will change the size of all the cells on the game board.
-   * The validation is rudimentary, leaving it up to the caller
-   * to ensure that the cell size is suitable for the implementation.
+  * To be implemented
+  */
+  removeClickEventFromCells(cellElements:NodeListOf<Element>):void {
+    throw new Error('Not implemented')
+  }
+
+  /**
+   * Update the html matrix with the values from the matrix.
    *
-   * @param {number} width - The width of the cell in pixels
-   * @param {number} height - The height of the cell in pixels
-   * @memberof GameBoard
-   * @throws {Error} - If width or height is not a positive integer
-   * @throws {Error} - If width or height is not a finite number
-   * @throws {Error} - If width or height is not a number
    */
   updateHtmlMatrixByMatrix(matrix:Matrix2D, htmlMatrix:HTMLElement):void {
     matrix.cells.forEach(cell => {
@@ -116,5 +118,25 @@ export class HtmlGameBoardActions implements IHtmlGameBoardFacade {
       cellElement.style.width = `${cell.cellSize.width}px`
       cellElement.style.height = `${cell.cellSize.height}px`
     })
+  }
+
+  updateMatrixByHtmlMatrix(matrix:Matrix2D, htmlMatrix:HTMLElement):void {
+    matrix.cells.forEach(cell => {
+      const cellElement = this.#getCellHtmlElementAtPosition(cell.position, htmlMatrix)
+      cell.value = cellElement.innerText
+      cell.cellSize = new CellSizeWidthHeight(cellElement.offsetWidth, cellElement.offsetHeight);
+    })
+  }
+
+  getLongestCellHtmlElementLineOfValueMatchIntersectingPoint(currentCell:Point2D, matrix:Matrix2D ,htmlMatrix:HTMLElement):HTMLElement[] {
+    this.updateMatrixByHtmlMatrix(matrix, htmlMatrix)
+    const matrix2DActions:IMatrix2DFacade = new Matrix2DActions()
+    const points:Point2D[] = matrix2DActions.getLongestCellElementLineOfValueMatchIntersectingCell(currentCell, matrix)
+    const htmlCellElements:HTMLElement[] = []
+    points.forEach(point => {
+      const cellElement = this.#getCellHtmlElementAtPosition(new PositionRowColumn(point.y,point.x), htmlMatrix)
+      htmlCellElements.push(cellElement)
+    })
+    return htmlCellElements
   }
 }

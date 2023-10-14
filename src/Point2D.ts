@@ -11,4 +11,8 @@ export class Point2D implements PointsSelectionComposite {
     this.x = xPosition;
     this.y = yPosition;
   }
+
+  forEach(callback: (point: Point2D) => void): void {
+    callback(this);
+  }
 }

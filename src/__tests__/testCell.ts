@@ -28,18 +28,10 @@ describe('Cell', () => {
     expect(cell).toBeInstanceOf(Cell)
     expect(cell.position).toBeInstanceOf(PositionRowColumn)
     expect(cell.cellSize).toBeInstanceOf(CellSizeWidthHeight)
-    expect(cell.CellElement).toBeInstanceOf(HTMLElement)
   })
 
   it('should correctly set position and cellSize values', () => {
     expect(cell.position).toBe(position)
     expect(cell.cellSize).toBe(cellSize)
-  })
-
-  it('should set the correct attributes on the cell element', () => {
-    expect(cell.CellElement.getAttribute('data-row')).toBe(row.toString())
-    expect(cell.CellElement.getAttribute('data-col')).toBe(col.toString())
-    expect(cell.CellElement.style.width).toBe(`${width}px`)
-    expect(cell.CellElement.style.height).toBe(`${height}px`)
   })
 })

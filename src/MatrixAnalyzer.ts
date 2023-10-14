@@ -15,6 +15,9 @@ export class MatrixAnalyzer{
   }
 
   getLongestMatchingLineIntersectingCell(currentPointXY:Point2D):Point2D[] {
+    if (!this.#isPositionInMatrixBoundaries(currentPointXY)) {
+      throw new Error('Position out of matrix boundaries')
+    }
     const vectors = new Transform2D(currentPointXY)
     // get vectors for 0, 45, 90, 135, 180, 225, 270, 315 degrees
     const searchDirections = vectors.getVectorsStepDegrees(MagicData.EightDirections)
