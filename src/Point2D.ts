@@ -15,4 +15,13 @@ export class Point2D implements PointsSelectionComposite {
   forEach(callback: (point: Point2D) => void): void {
     callback(this);
   }
+
+  equals(point: Point2D): boolean {
+    return this.x === point.x && this.y === point.y;
+  }
+
+  normalize(): Point2D {
+    const length = Math.sqrt(this.x ** 2 + this.y ** 2);
+    return new Point2D(this.x / length, this.y / length);
+  }
 }

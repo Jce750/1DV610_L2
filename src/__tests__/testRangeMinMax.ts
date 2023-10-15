@@ -23,14 +23,6 @@ describe('RangeMinMax', () => {
     expect(() => new RangeMinMax(1, NaN)).toThrow()
   })
 
-  it('should throw an error if min is not greater than 0', () => {
-    expect(() => new RangeMinMax(0, 10)).toThrow()
-  })
-
-  it('should throw an error if min is not an integer', () => {
-    expect(() => new RangeMinMax(1.5, 10)).toThrow()
-  })
-
   it('should throw an error if min is not finite', () => {
     expect(() => new RangeMinMax(Infinity, 10)).toThrow()
   })

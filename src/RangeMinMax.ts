@@ -1,3 +1,4 @@
+import { MagicData } from "./MagicData";
 import { ValidatorNumber } from "./ValidatorNumber";
 import { ValidatorRange } from "./ValidatorRange";
 
@@ -9,7 +10,7 @@ export class RangeMinMax{
   #min: number;
   #max: number;
 
-  constructor(min: number = 1, max: number = 10){
+  constructor(min: number, max: number){
     this.#validateInput(min, max);
     this.#min = min;
     this.#max = max;
@@ -31,7 +32,6 @@ export class RangeMinMax{
 
   checkValueInRange(value: number):boolean{
     if(value < this.min || value > this.max){
-      console.log(`inRange: ${value} returns false`)
       throw new Error(`value must be between ${this.min} and ${this.max}`);
     }
     return true;

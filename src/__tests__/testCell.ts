@@ -27,11 +27,11 @@ describe('Cell', () => {
   it('should create a new cell-object', () => {
     expect(cell).toBeInstanceOf(Cell)
     expect(cell.position).toBeInstanceOf(PositionRowColumn)
-    expect(cell.cellSize).toBeInstanceOf(CellSizeWidthHeight)
+    expect(cell.size).toBeInstanceOf(CellSizeWidthHeight)
   })
 
   it('should correctly set position and cellSize values', () => {
     expect(cell.position).toBe(position)
-    expect(cell.cellSize).toBe(cellSize)
+    expect(cell.size).toBe(cellSize)
   })
 })

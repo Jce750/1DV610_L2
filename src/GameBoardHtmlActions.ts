@@ -8,8 +8,9 @@ import { Matrix2D } from "./Matrix2D"
 import { CellSizeWidthHeight } from "./CellSizeWidthHeight"
 import { Matrix2DActions } from "./Matrix2DActions"
 import { IMatrix2DFacade } from "./IMatrix2DFacade"
+import { PointsSelectionNode } from "./PointsSelectionNode"
 
-export class HtmlGameBoardActions implements IHtmlGameBoardFacade {
+export class GameBoardHtmlActions implements IHtmlGameBoardFacade {
 
     /**
    * Returns a single HTMLelement representation of a cell at a row and column from the collection.
@@ -22,19 +23,19 @@ export class HtmlGameBoardActions implements IHtmlGameBoardFacade {
    * @throws {Error} - If row or column is out of range
    * @throws {Error} - If element is not found
    */
-    getCellElementAtPosition(position:PositionRowColumn, gameBoardElement:HTMLElement):HTMLElement{
-      const {row, column} = position
-      const {rows, columns} = this.#getGameBoardElementRowsColumns(gameBoardElement)
-      if (row < 1 || row > rows || column < 1 || column > columns) {
-        throw new Error('row or column out of range')
-      }
-      let element = gameBoardElement.querySelector(`[data-row="${row}"][data-col="${column}"]`)
-      if(!element){
+    getCellHtmlElementAtPosition(position:PositionRowColumn, gameBoardElement:HTMLElement):HTMLElement{
+      try {
+        return this.#getCellHtmlElementAtPosition(position, gameBoardElement)
+      } catch (error) {
         throw new Error('element not found')
       }
-      return element as HTMLElement
     }
-  
+
+    getCellHtmlElementAtPoint(point:Point2D, gameBoardElement:HTMLElement):HTMLElement{
+      const position = new PositionRowColumn(point.y, point.x)
+      return this.getCellHtmlElementAtPosition(position, gameBoardElement)
+    }
+
       /**
    * Return the html inner text value of a cell at a row and column.
    * 1-based indexing is used for rows and columns.
@@ -47,7 +48,7 @@ export class HtmlGameBoardActions implements IHtmlGameBoardFacade {
    * @throws {Error} - If element is not found
    */
   getCellHtmlElementValueAtPosition(position:PositionRowColumn, gameBoardElement:HTMLElement):string{
-    return this.#getCellHtmlElementAtPosition(position, gameBoardElement).innerText
+    return this.getCellHtmlElementAtPosition(position, gameBoardElement).innerText
   }
 
   /**
@@ -58,12 +59,12 @@ export class HtmlGameBoardActions implements IHtmlGameBoardFacade {
     const { row, column } = position;
     const allCellElements = gameBoardElement.querySelectorAll(MagicData.HtmlCellSelector);
     const firstMatchingCell = Array.from(allCellElements).find(cellElement =>
-     this.#isMatchingCell(cellElement, row, column)
+      this.#isMatchingCell(cellElement, row, column)
     );
-    if (firstMatchingCell) {
-      return firstMatchingCell as HTMLElement;
+    if (!firstMatchingCell) {
+      throw new Error('element not found');
     }
-    throw new Error('Cell not found');
+    return firstMatchingCell as HTMLElement;
   }
 
   #isMatchingCell(cellElement: Element, row: number, column: number): boolean {
@@ -71,17 +72,33 @@ export class HtmlGameBoardActions implements IHtmlGameBoardFacade {
       cellElement.getAttribute(MagicData.HtmlCellRow) === row.toString()
   }
 
-
   #getGameBoardElementRowsColumns(gameBoardElement:HTMLElement):MatrixSizeRowsCols{
     const nodeListCells:NodeListOf<Element> = this.#getAllHtmlElementCells(gameBoardElement)
+    // Check if nodeListCells is empty
+    if (nodeListCells.length === 0) {
+      throw new Error('No cells found');
+    }
     const cells = [...nodeListCells] as HTMLElement[]
-    const rows = cells.filter(cell => cell.getAttribute('data-row') === '1')
-    const columns = cells.filter(cell => cell.getAttribute('data-col') === '1')
-    return new MatrixSizeRowsCols(rows.length,columns.length)
+    const uniqueRows = new Set<string>();
+    const uniqueColumns = new Set<string>();
+    cells.forEach(cell => {
+      const rowName = cell.getAttribute(MagicData.HtmlCellRow);
+      const columnName = cell.getAttribute(MagicData.HtmlCellColumn);
+      if (rowName) {
+        uniqueRows.add(rowName);
+      }
+      if (columnName) {
+        uniqueColumns.add(columnName);
+      }
+    });
+    return new MatrixSizeRowsCols(uniqueRows.size,uniqueColumns.size)
   }
 
   #getAllHtmlElementCells(gameBoardElement:HTMLElement):NodeListOf<Element>{
-    return gameBoardElement.querySelectorAll('.cell')
+    console.log(gameBoardElement)
+    console.log(MagicData.HtmlCellSelector)
+    console.log('FFFFFFFFFFFFFFFFFFFFFFffF')
+    return gameBoardElement.querySelectorAll(MagicData.HtmlCellSelector)
   }
 
   addClickEventToHtmlElementCells(selection:PointsSelectionComposite, onclick: ((event: MouseEvent) => void), gameBoardHtmlElement:HTMLElement):void {
@@ -100,6 +117,17 @@ export class HtmlGameBoardActions implements IHtmlGameBoardFacade {
     cellElement.addEventListener('click', onclick)
   }
 
+  selectAllCellsPointsInHtmlElement(gameBoardHtmlElement:HTMLElement):PointsSelectionComposite {
+    const selection = new PointsSelectionNode(0,0)
+    const {rows, columns} = this.#getGameBoardElementRowsColumns(gameBoardHtmlElement)
+    for (let row = 1; row <= rows; row++) {
+      for (let column = 1; column <= columns; column++) {
+        selection.add(new Point2D(column, row))
+      }
+    }
+    return selection
+  }
+
   /**
   * To be implemented
   */
@@ -115,8 +143,8 @@ export class HtmlGameBoardActions implements IHtmlGameBoardFacade {
     matrix.cells.forEach(cell => {
       const cellElement = this.#getCellHtmlElementAtPosition(cell.position, htmlMatrix)
       cellElement.innerText = cell.value.toString()
-      cellElement.style.width = `${cell.cellSize.width}px`
-      cellElement.style.height = `${cell.cellSize.height}px`
+      cellElement.style.width = `${cell.size.width}px`
+      cellElement.style.height = `${cell.size.height}px`
     })
   }
 
@@ -124,7 +152,7 @@ export class HtmlGameBoardActions implements IHtmlGameBoardFacade {
     matrix.cells.forEach(cell => {
       const cellElement = this.#getCellHtmlElementAtPosition(cell.position, htmlMatrix)
       cell.value = cellElement.innerText
-      cell.cellSize = new CellSizeWidthHeight(cellElement.offsetWidth, cellElement.offsetHeight);
+      cell.size = new CellSizeWidthHeight(cellElement.offsetWidth, cellElement.offsetHeight);
     })
   }
 
@@ -138,5 +166,11 @@ export class HtmlGameBoardActions implements IHtmlGameBoardFacade {
       htmlCellElements.push(cellElement)
     })
     return htmlCellElements
+  }
+
+  getCellHtmlElementPointInHtmlMatrix(cellElement:HTMLElement, htmlMatrix:HTMLElement):Point2D {
+    const row = parseInt(cellElement.getAttribute(MagicData.HtmlCellRow) as string)
+    const column = parseInt(cellElement.getAttribute(MagicData.HtmlCellColumn) as string)
+    return new Point2D(column, row)
   }
 }

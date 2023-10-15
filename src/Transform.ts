@@ -11,15 +11,15 @@ export class Transform2D {
   #rotation:Rotation = new Rotation(0)
   #scale:Scale2D = new Scale2D(1, 1)
 
-  constructor(point1: Point2D, point2?: Point2D) {
-    if (!point2) {
-      point2 = new Point2D(0, 0)
-    }
-    this.#vector = new Point2D(point2.x - point1.x, point2.y - point1.y);
-    const angleInRadians = Math.atan2(point2.y - point1.y, point2.x - point1.x);
+  constructor(point1: Point2D) {
+  
+    this.#vector = point1;
+  
+    const angleInRadians = Math.atan2(point1.y, point1.x);
     const angleInDegrees = angleInRadians * (180 / Math.PI);
+  
     this.#rotation = new Rotation(angleInDegrees);
-    this.#scale = new Scale2D(1, 1)
+    this.#scale = new Scale2D(1, 1);
   }
 
   get x() {
@@ -31,27 +31,29 @@ export class Transform2D {
   }
 
   // Staticisch
-  public getVectorsStepDegrees(step:number):Transform2D[]{
+  public getVectorsStepDegrees(step:number, range:number):Transform2D[]{
     const vectors:Transform2D[] = []
-    for (let degree = 0; degree < MagicData.FullCircle; degree += step) {
-      [...vectors, this.createNormalizedDirectionVector(degree)]
+    for (let degree = 0; degree < range; degree += step) {
+      const vector = this.createNormalizedDirectionVector(degree)
+      vectors.push(vector)
     }
     return vectors
   }
 
-  createNormalizedDirectionVector(degrees:number):Point2D {
+  createNormalizedDirectionVector(degrees:number):Transform2D {
     const x = Math.cos(degrees*Math.PI/180);
     const y = Math.sin(degrees*Math.PI/180);
-    return new Point2D(x,y).normalize()
+    return new Transform2D(new Point2D(x,y)).normalizeToOneBase()
   }
 
   public getInvertedCopy():Transform2D {
-    return new Transform2D(new Point2D(0,0), new Point2D(this.#vector.x * -1, this.#vector.y * -1))
+    return new Transform2D(new Point2D(this.#vector.x * -1, this.#vector.y * -1))
   }
 
-
-  normalize(): Transform2D {
+  normalizeToOneBase(): Transform2D {
     const length = Math.sqrt(this.#vector.x ** 2 + this.#vector.y ** 2);
-    return new Transform2D(new Point2D(this.#vector.x / length, this.#vector.y / length), new Point2D(0, 0));
+    const normalizedX = Math.round(this.#vector.x / length);
+    const normalizedY = Math.round(this.#vector.y / length);
+    return new Transform2D(new Point2D(normalizedX, normalizedY));
   }
 }

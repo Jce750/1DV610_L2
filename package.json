@@ -3,6 +3,15 @@
   "version": "1.0.0",
   "description": "Analyse a matrix",
   "type": "module",
+  "exports": {
+    "./PositionRowColumn": "./dist/PositionRowColumn.js",
+    "./Matrix2DFactory": "./dist/Matrix2DFactory.js",
+    "./Matrix2DActions": "./dist/Matrix2DActions.js",
+    "./GameBoardHtmlFactory": "./dist/GameBoardHtmlFactory.js",
+    "./GameBoardHtmlActions": "./dist/GameBoardHtmlActions.js",
+    "./MatrixSizeRowsCols": "./dist/MatrixSizeRowsCols.js",
+    "./CellSizeWidthHeight": "./dist/CellSizeWidthHeight.js"
+  },
   "main": "./dist/GameBoard.js",
   "scripts": {
     "start": "tsc && node dist/GameBoard.js",

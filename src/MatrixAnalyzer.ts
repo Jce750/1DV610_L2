@@ -19,14 +19,15 @@ export class MatrixAnalyzer{
       throw new Error('Position out of matrix boundaries')
     }
     const vectors = new Transform2D(currentPointXY)
-    // get vectors for 0, 45, 90, 135, 180, 225, 270, 315 degrees
-    const searchDirections = vectors.getVectorsStepDegrees(MagicData.EightDirections)
+        // get vectors for 0, 45, 90, 135degrees
+    const searchDirections = vectors.getVectorsStepDegrees(MagicData.Step45,MagicData.SemiCircle)
     let longestLineOfMatches:Point2D[] = []
     let positiveDirection:Point2D[]
     let negativeDirection:Point2D[]
     let longestSoFar:Point2D[]
     for (const direction of searchDirections) {
       positiveDirection = this.#getMatchesInSpecifiedDirection(currentPointXY, direction)
+
       negativeDirection = this.#getMatchesInSpecifiedDirection(currentPointXY, direction.getInvertedCopy())
       longestSoFar = [...positiveDirection, currentPointXY, ...negativeDirection]
       if (longestSoFar.length > longestLineOfMatches.length) {
@@ -39,7 +40,8 @@ export class MatrixAnalyzer{
   #getMatchesInSpecifiedDirection(currentPointXY:Point2D, direction:Transform2D):Point2D[] {
     const startPosition = currentPointXY
     const currentCell = this.#getCellAtPosition(startPosition)
-    let currentPosition = startPosition
+    
+    let currentPosition = startPosition;
     let matchingPositions:Point2D[] = []
     // Get first neighbor in specified direction
     if (this.#isCellNeighborInDirectionOnBoard(currentPosition, direction)) {
@@ -58,13 +60,13 @@ export class MatrixAnalyzer{
   getCurrentCellElementPosition(currentCell:HTMLElement):Point2D {
     const row = Number(currentCell.dataset.row)
     const column = Number(currentCell.dataset.col)
-    return new Point2D(row,column)
+    return new Point2D(column, row) //x, y
   }
 
   getNextCellPositionInDirection(position:Point2D, direction:Transform2D):Point2D {
     const row = position.y + direction.y
     const column = position.x + direction.x
-    return new Point2D(row,column)
+    return new Point2D(column,row)
   }
 
   #isPositionInMatrixBoundaries(position:Point2D):boolean{
@@ -88,4 +90,5 @@ export class MatrixAnalyzer{
     }
     return foundCell;
   }
+
 }

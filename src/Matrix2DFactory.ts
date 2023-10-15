@@ -3,54 +3,68 @@ import { CellSizeWidthHeight } from "./CellSizeWidthHeight";
 import { MagicData } from "./MagicData";
 import { Matrix2D } from "./Matrix2D";
 import { MatrixSizeRowsCols } from "./MatrixSizeRowsCols";
+import { Point2D } from "./Point2D";
 import { PositionRowColumn } from "./PositionRowColumn";
 import { RangeMinMax } from "./RangeMinMax";
+import { ValidatorMatrix } from "./ValidatorMatrix";
 
 export class Matrix2DFactory {
 
-  buildMatrix2DfromScratch(size: MatrixSizeRowsCols): Matrix2D {
-    const { rows, columns } = size;
-    new RangeMinMax(MagicData.MinRows, MagicData.MaxRows).checkValueInRange(rows)
-    new RangeMinMax(MagicData.MinColumns,MagicData.MaxColumns).checkValueInRange(columns)
-    const cells:Cell[] = [];
-    for (let row = 0; row < size.rows; row++) {
-      for (let column = 0; column < size.columns; column++) {
-        const position = new PositionRowColumn(row, column);
-        const cell = new Cell(position);
-        cells.push(cell);
+  // Note that row and column are 1-indexed.
+  buildMatrix2DFromScratch(size: MatrixSizeRowsCols): Matrix2D {
+    try {
+      const { rows, columns } = size;
+      new RangeMinMax(MagicData.MinRows, MagicData.MaxRows).checkValueInRange(rows)
+      new RangeMinMax(MagicData.MinColumns,MagicData.MaxColumns).checkValueInRange(columns)
+      let cells:Cell[] = [];
+      for (let row = 1; row <= size.rows; row++) {
+        for (let column = 1; column <= size.columns; column++) {
+          const position = new PositionRowColumn(row, column);
+          const cell = this.createCellAtPosition(position, size);
+          cells.push(cell);
+        }
       }
+      return new Matrix2D(size, cells);
+    } catch (error) {
+      throw new Error('invalid size');
     }
-    return new Matrix2D(size, cells);
+  }
+
+  createCellAtPosition(position: PositionRowColumn, matrixSize:MatrixSizeRowsCols): Cell {
+    const point = new Point2D(position.column, position.row);
+    const validator = new ValidatorMatrix()
+    validator.checkPositionExistInMatrix(point, matrixSize);
+    const cell = new Cell(position);
+    if (!cell) {
+      throw new Error('cell not found');
+    }
+    return cell;
   }
 
   buildMatrix2DFromHtml(gameBoardElement: HTMLElement): Matrix2D {
-    const cellNodeList = gameBoardElement.querySelectorAll<HTMLElement>('.cell');  // Assuming cells have class 'cell'
-    const cells = this.createCellsFromHtmlCellElements([...cellNodeList] as HTMLElement[]);  // Convert NodeList to Array
-    const size = new MatrixSizeRowsCols(this.getMaxRow(cells) + 1, this.getMaxCol(cells) + 1);  // Assuming rows and columns are 0-indexed
+    const cellNodeList = gameBoardElement.querySelectorAll<HTMLElement>('.cell');
+    const cells = this.createCellsFromHtmlCellElements([...cellNodeList] as HTMLElement[]);
+    const size = new MatrixSizeRowsCols(this.getMaxRow(cells), this.getMaxCol(cells));  
     const matrix = new Matrix2D(size);
     return new Matrix2D(size, cells);
   }
 
   createCellsFromHtmlCellElements(cellElements: HTMLElement[]): Cell[] {
-    let maxRow = -1;
-    let maxCol = -1;
     const cells: Cell[] = [];
     cellElements.forEach((cellElement) => {
       const cell = this.createCellFromHtmlCellElement(cellElement);
       cells.push(cell);
-
-      // Update maxRow and maxCol
-      maxRow = Math.max(maxRow, cell.position.row);
-      maxCol = Math.max(maxCol, cell.position.column);
     });
     return cells;
   }
 
-  private createCellFromHtmlCellElement(cellElement: HTMLElement): Cell {
-    const row = Number(cellElement.dataset.row);
-    const column = Number(cellElement.dataset.col);
+  createCellFromHtmlCellElement(cellElement: HTMLElement): Cell {
+    const row = Number(cellElement.getAttribute(MagicData.HtmlCellRow));
+    const column = Number(cellElement.getAttribute(MagicData.HtmlCellColumn));
     const position = new PositionRowColumn(row, column);
-    const cellSize = new CellSizeWidthHeight(cellElement.offsetWidth, cellElement.offsetHeight);
+    const width = Number(cellElement.style.width.replace('px', ''));
+    const height = Number(cellElement.style.height.replace('px', ''));
+    const cellSize = new CellSizeWidthHeight(width, height);
     return new Cell(position, cellSize);
   }
 

@@ -13,5 +13,6 @@ export class Matrix2D {
 
   constructor(size:MatrixSizeRowsCols, cells:Cell[] = []) {
     this.size = size
+    this.cells = cells
   }
 }

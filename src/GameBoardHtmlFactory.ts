@@ -13,6 +13,10 @@ export class GameBoardHtmlFactory {
     return gameBoardElement
   }
 
+  createCellHtmlElement(position:PositionRowColumn, cellSize:CellSizeWidthHeight):HTMLElement {
+    return this.#createHtmlElementCell(position, cellSize)
+  }
+
   #createRowOfHtmlElementCells (row:number, matrixSize:MatrixSizeRowsCols, cellSize:CellSizeWidthHeight):HTMLElement {
     const {columns} = matrixSize
     const rowElement = document.createElement('div')

@@ -6,8 +6,10 @@ export enum MagicData {
   MaxRows = 20,
   MaxColumns = 20,
   FullCircle = 360,
+  SemiCircle = 180,
   EightDirections = 360/8,
-  HtmlCellSelector = 'cell',
+  Step45 = 45,
+  HtmlCellSelector = '.cell',
   HtmlCellColumn = 'data-col',
   HtmlCellRow = 'data-row',
 }
