@@ -24,4 +24,8 @@ export class Point2D implements PointsSelectionComposite {
     const length = Math.sqrt(this.x ** 2 + this.y ** 2);
     return new Point2D(this.x / length, this.y / length);
   }
+
+  clone(): Point2D {
+    return new Point2D(this.x, this.y);
+  }
 }

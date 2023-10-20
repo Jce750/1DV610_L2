@@ -1,4 +1,4 @@
-import { MatrixSizeRowsCols } from '../MatrixSizeRowsCols' // Adjust the import path as needed
+import { MatrixSizeRowsCols } from './../lib/MatrixSizeRowsCols' // Adjust the import path as needed
 
 describe('MatrixSizeRowsCols', () => {
   it('should correctly set row and column values', () => {

@@ -1,8 +1,8 @@
-import { Matrix2DFactory } from '../Matrix2DFactory';
-import { MatrixSizeRowsCols } from '../MatrixSizeRowsCols';
-import { Matrix2D } from '../Matrix2D';
-import { Point2D } from '../Point2D';
-import { Matrix2DActions } from '../Matrix2DActions';
+import { Matrix2DFactory } from './../lib/Matrix2DFactory';
+import { MatrixSizeRowsCols } from './../lib/MatrixSizeRowsCols';
+import { Matrix2D } from './../lib/Matrix2D';
+import { Point2D } from './../lib/Point2D';
+import { Matrix2DActions } from './../lib/Matrix2DActions';
 
 describe('Matrix2DActions', () => {
   let factory: Matrix2DFactory;
@@ -66,9 +66,9 @@ describe('Matrix2DActions', () => {
     expect(cellValue13).toBe('X')
     expect(cellValue14).toBe('X')
     expect(cellValue15).toBe('X')
-    const itemsFoundCount = actions.getLongestCellElementLineOfValueMatchIntersectingCell(new Point2D(1,1), matrix).length
+    const itemsFoundCount = actions.getLongestCellElementLineOfValueMatchIntersectingCells(new Point2D(1,1), matrix).length
     expect(itemsFoundCount).toBe(5)
-    const points = actions.getLongestCellElementLineOfValueMatchIntersectingCell(new Point2D(1,1), matrix)
+    const points = actions.getLongestCellElementLineOfValueMatchIntersectingCells(new Point2D(1,1), matrix)
     console.log(points)
     expect(points[0].x).toBe(1)
     expect(points[0].y).toBe(2)
@@ -84,7 +84,7 @@ describe('Matrix2DActions', () => {
     actions.setCellValueAtPosition(new Point2D(1,3), matrix, 'X')
     actions.setCellValueAtPosition(new Point2D(1,4), matrix, 'X')
     actions.setCellValueAtPosition(new Point2D(1,5), matrix, 'X')
-    const itemsFoundCount = actions.getLongestCellElementLineOfValueMatchIntersectingCell(new Point2D(1,3), matrix).length
+    const itemsFoundCount = actions.getLongestCellElementLineOfValueMatchIntersectingCells(new Point2D(1,3), matrix).length
     expect(itemsFoundCount).toBe(5)
   })
 
@@ -94,7 +94,7 @@ describe('Matrix2DActions', () => {
     actions.setCellValueAtPosition(new Point2D(3,3), matrix, 'X')
     actions.setCellValueAtPosition(new Point2D(4,4), matrix, 'X')
     actions.setCellValueAtPosition(new Point2D(5,5), matrix, 'X')
-    const itemsFoundCount = actions.getLongestCellElementLineOfValueMatchIntersectingCell(new Point2D(1,1), matrix).length
+    const itemsFoundCount = actions.getLongestCellElementLineOfValueMatchIntersectingCells(new Point2D(1,1), matrix).length
     expect(itemsFoundCount).toBe(5)
   })
 })

@@ -23,4 +23,8 @@ export class CellSizeWidthHeight {
     new ValidatorNumber(height).checkPositive().checkFinite().checkInteger()
     this.#height = height
   }
+
+  clone():CellSizeWidthHeight{
+    return new CellSizeWidthHeight(this.width, this.height)
+  }
 }

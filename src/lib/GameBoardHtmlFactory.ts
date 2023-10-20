@@ -12,7 +12,7 @@ export class GameBoardHtmlFactory {
    * @param cellSize The width and height in pixels of each cell in the game board.
    * @returns A game board HTML element.
    */
-  createGameBoardHTML(matrixSize:MatrixSizeRowsCols, cellSize:CellSizeWidthHeight):HTMLElement {
+  createGameBoardHtml(matrixSize:MatrixSizeRowsCols, cellSize:CellSizeWidthHeight):HTMLElement {
     const {rows} = matrixSize
     const gameBoardElement = document.createElement(MagicData.StringDiv)
     gameBoardElement.classList.add(MagicData.StringGameBoard)

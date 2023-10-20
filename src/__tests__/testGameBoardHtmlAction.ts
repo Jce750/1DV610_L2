@@ -2,13 +2,13 @@
  * @jest-environment jsdom
  */
 
-import { GameBoardHtmlActions } from '../GameBoardHtmlActions';
-import { Point2D } from '../Point2D';
-import { PointsSelectionNode } from '../PointsSelectionNode';
-import { Matrix2DFactory } from '../Matrix2DFactory';
-import { MatrixSizeRowsCols } from '../MatrixSizeRowsCols';
-import { GameBoardHtmlFactory } from '../GameBoardHtmlFactory';
-import { CellSizeWidthHeight } from '../CellSizeWidthHeight';
+import { GameBoardHtmlActions } from './../lib/GameBoardHtmlActions';
+import { Point2D } from './../lib/Point2D';
+import { PointsSelectionNode } from './../lib/PointsSelectionNode';
+import { Matrix2DFactory } from './../lib/Matrix2DFactory';
+import { MatrixSizeRowsCols } from './../lib/MatrixSizeRowsCols';
+import { GameBoardHtmlFactory } from './../lib/GameBoardHtmlFactory';
+import { CellSizeWidthHeight } from './../lib/CellSizeWidthHeight';
 
 describe('GameBoardHtmlActions', () => {
   let gameBoardActions: GameBoardHtmlActions;
@@ -119,7 +119,7 @@ describe('GameBoardHtmlActions', () => {
   it('should update HTML matrix by Matrix2D', () => {
     const matrix4Test = new Matrix2DFactory().buildMatrix2DFromScratch(new MatrixSizeRowsCols(3,3))
     const htmlMatrix = new GameBoardHtmlFactory()
-    .createGameBoardHTML(new MatrixSizeRowsCols(3,3), new CellSizeWidthHeight(50,50))
+    .createGameBoardHtml(new MatrixSizeRowsCols(3,3), new CellSizeWidthHeight(50,50))
     matrix4Test.cells.forEach(cell => {
       cell.value = 'A'
     })

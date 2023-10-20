@@ -1,5 +1,4 @@
 import { MatrixSizeRowsCols } from "./MatrixSizeRowsCols"
-import { IHtmlGameBoardFacade } from "./IHtmlGameBoardFacade"
 import { PointsSelectionComposite } from "./PointsSelectionComposite"
 import { Point2D } from "./Point2D"
 import { MagicData } from "./MagicData"
@@ -10,7 +9,7 @@ import { PointsSelectionNode } from "./PointsSelectionNode"
 import { Cell } from "./Cell"
 import { ValidatorMatrix } from "./ValidatorMatrix"
 
-export class GameBoardHtmlActions implements IHtmlGameBoardFacade {
+export class GameBoardHtmlActions {
 
   /**
   * Returns a single HTMLelement representation of a cell at a point (coordinate).
@@ -70,6 +69,9 @@ export class GameBoardHtmlActions implements IHtmlGameBoardFacade {
    * @returns a selection of points
    */
   selectAllCellsPointsInHtmlElement(gameBoardHtmlElement:HTMLElement):PointsSelectionComposite {
+    if (!gameBoardHtmlElement) {
+      throw new Error('gameBoardHtmlElement is not defined')
+    }
     const selection = new PointsSelectionNode(0,0)
     const {rows, columns} = this.#getGameBoardElementRowsColumns(gameBoardHtmlElement)
     for (let row = 1; row <= rows; row++) {
@@ -110,7 +112,7 @@ export class GameBoardHtmlActions implements IHtmlGameBoardFacade {
   getLongestCellHtmlElementLineOfValueMatchIntersectingPoint(currentCell:Point2D, matrix:Matrix2D ,htmlMatrix:HTMLElement):HTMLElement[] {
     this.updateMatrixByHtmlMatrix(matrix, htmlMatrix)
     const matrix2DActions = new Matrix2DActions()
-    const points = matrix2DActions.getLongestCellElementLineOfValueMatchIntersectingCell(currentCell, matrix)
+    const points = matrix2DActions.getLongestCellElementLineOfValueMatchIntersectingCells(currentCell, matrix)
     const htmlCellElements = points.map(point => this.getCellHtmlElementAtPoint(point, htmlMatrix))
     return htmlCellElements
   }

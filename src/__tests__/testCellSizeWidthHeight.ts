@@ -1,4 +1,4 @@
-import { CellSizeWidthHeight } from '../CellSizeWidthHeight' // Adjust the import path as needed
+import { CellSizeWidthHeight } from './../lib/CellSizeWidthHeight' // Adjust the import path as needed
 
 describe('CellSizeWidthHeight', () => {
   it('should correctly set min and max values', () => {

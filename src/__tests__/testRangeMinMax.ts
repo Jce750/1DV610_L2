@@ -1,4 +1,4 @@
-import { RangeMinMax } from '../RangeMinMax' // Adjust the import path as needed
+import { RangeMinMax } from './../lib/RangeMinMax' // Adjust the import path as needed
 
 describe('RangeMinMax', () => {
   it('should correctly set min and max values', () => {

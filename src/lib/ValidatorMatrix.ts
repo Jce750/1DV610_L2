@@ -21,4 +21,10 @@ export class ValidatorMatrix {
     }
     return this
   }
+
+  checkSingleLetter(value:string) {
+    if (value.length !== 1) {
+        throw new Error(`Value must be a single letter, but was ${value}`);
+    }
+}
 }

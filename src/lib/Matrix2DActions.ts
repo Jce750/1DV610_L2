@@ -1,4 +1,3 @@
-import { IMatrix2DFacade } from "./IMatrix2DFacade";
 import { Matrix2D } from "./Matrix2D";
 import { Matrix2DFactory } from "./Matrix2DFactory";
 import { MatrixAnalyzer } from "./MatrixAnalyzer";
@@ -7,7 +6,7 @@ import { Point2D } from "./Point2D";
 import { ValidatorMatrix } from "./ValidatorMatrix";
 
 
-export class Matrix2DActions implements IMatrix2DFacade {
+export class Matrix2DActions {
   private factory: Matrix2DFactory;
 
   constructor() {
@@ -43,9 +42,9 @@ export class Matrix2DActions implements IMatrix2DFacade {
    * @param gameBoardHtmlElement the html gameboard element
    * @returns a selection of points
    */
-  public getLongestCellElementLineOfValueMatchIntersectingCell(currentCell:Point2D, matrix:Matrix2D):Point2D[]{
+  public getLongestCellElementLineOfValueMatchIntersectingCells(currentCell:Point2D, matrix:Matrix2D):Point2D[]{
     const matrixAnalyser = new MatrixAnalyzer(matrix)
-    const longest = matrixAnalyser.getLongestMatchingLineIntersectingCell(currentCell)
+    const longest = matrixAnalyser.getLongestMatchingLineOfIntersectingCells(currentCell)
     console.log('longest in Matrix2Daction', longest)
     return longest
   }

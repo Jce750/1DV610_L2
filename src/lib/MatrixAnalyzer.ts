@@ -14,7 +14,13 @@ export class MatrixAnalyzer{
     this.#gameboard = gameboard
   }
 
-  getLongestMatchingLineIntersectingCell(currentPointXY:Point2D):Point2D[] {
+  getCurrentCellElementPosition(currentCell:HTMLElement):Point2D {
+    const row = Number(currentCell.dataset.row)
+    const column = Number(currentCell.dataset.col)
+    return new Point2D(column, row) //x, y
+  }
+
+  getLongestMatchingLineOfIntersectingCells(currentPointXY:Point2D):Point2D[] {
     this.#validator.checkPositionExistInMatrix(currentPointXY, this.#gameboard.size);
     // get vectors for 0, 45, 90, 135degrees
     const searchDirections = this.#getSearchDirections(currentPointXY);
@@ -24,12 +30,6 @@ export class MatrixAnalyzer{
       longestLineOfMatches = this.#updateLongestLineOfMatches(longestLineOfMatches, currentLongest);
     }
     return longestLineOfMatches;
-  }
-
-  getCurrentCellElementPosition(currentCell:HTMLElement):Point2D {
-    const row = Number(currentCell.dataset.row)
-    const column = Number(currentCell.dataset.col)
-    return new Point2D(column, row) //x, y
   }
 
   #getSearchDirections(currentPoint: Point2D): Transform2D[] {

@@ -1,4 +1,4 @@
-import { PositionRowColumn } from '../PositionRowColumn' // Adjust the import path as needed
+import { PositionRowColumn } from './../lib/PositionRowColumn' // Adjust the import path as needed
 
 describe('PositionRowColumn', () => {
   it('should correctly set row and column values', () => {

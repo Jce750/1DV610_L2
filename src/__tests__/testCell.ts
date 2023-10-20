@@ -1,9 +1,9 @@
 /**
  * @jest-environment jsdom
  */
-import { Cell } from '../Cell';
-import { Point2D } from '../Point2D'
-import { CellSizeWidthHeight } from '../CellSizeWidthHeight'
+import { Cell } from './../lib/Cell';
+import { Point2D } from './../lib/Point2D'
+import { CellSizeWidthHeight } from './../lib/CellSizeWidthHeight'
 
 describe('Cell', () => {
   let position:Point2D

@@ -1,13 +1,13 @@
 /**
  * @jest-environment jsdom
  */
-import { Matrix2DFactory } from '../Matrix2DFactory';
-import { MatrixSizeRowsCols } from '../MatrixSizeRowsCols';
-import { MagicData } from '../MagicData';
-import { Cell } from '../Cell';
-import { Point2D } from '../Point2D';
-import { CellSizeWidthHeight } from '../CellSizeWidthHeight';
-import { GameBoardHtmlFactory } from '../GameBoardHtmlFactory';
+import { Matrix2DFactory } from './../lib/Matrix2DFactory';
+import { MatrixSizeRowsCols } from './../lib/MatrixSizeRowsCols';
+import { MagicData } from './../lib/MagicData';
+import { Cell } from './../lib/Cell';
+import { Point2D } from './../lib/Point2D';
+import { CellSizeWidthHeight } from './../lib/CellSizeWidthHeight';
+import { GameBoardHtmlFactory } from './../lib/GameBoardHtmlFactory';
 
 describe('Matrix2DFactory', () => {
   let factory: Matrix2DFactory;
@@ -53,7 +53,7 @@ describe('Matrix2DFactory', () => {
   describe('buildMatrix2DFromHtml', () => {
     it('should build a matrix from an HTML element', () => {
       const htmlFactory = new GameBoardHtmlFactory();
-      const htmlGameboard = htmlFactory.createGameBoardHTML(new MatrixSizeRowsCols(2, 2), new CellSizeWidthHeight(100, 100));
+      const htmlGameboard = htmlFactory.createGameBoardHtml(new MatrixSizeRowsCols(2, 2), new CellSizeWidthHeight(100, 100));
       const matrix = factory.buildMatrix2DFromHtml(htmlGameboard);
       expect(matrix.size.rows).toBe(2);
       expect(matrix.size.columns).toBe(2);

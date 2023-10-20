@@ -12,7 +12,8 @@
     "./MatrixSizeRowsCols": "./dist/MatrixSizeRowsCols.js",
     "./CellSizeWidthHeight": "./dist/CellSizeWidthHeight.js",
     "./IMatrix2DFacade": "./dist/IMatrix2DFacade.js",
-    "./IHtmlGameBoardFacade": "./dist/IHtmlGameBoardFacade.js"
+    "./IHtmlGameBoardFacade": "./dist/IHtmlGameBoardFacade.js",
+    "./Point2D": "./dist/Point2D.js"
   },
   "main": "./dist/GameBoard.js",
   "scripts": {
