@@ -5,7 +5,7 @@ import { Matrix2DFactory } from '../Matrix2DFactory';
 import { MatrixSizeRowsCols } from '../MatrixSizeRowsCols';
 import { MagicData } from '../MagicData';
 import { Cell } from '../Cell';
-import { PositionRowColumn } from '../PositionRowColumn';
+import { Point2D } from '../Point2D';
 import { CellSizeWidthHeight } from '../CellSizeWidthHeight';
 import { GameBoardHtmlFactory } from '../GameBoardHtmlFactory';
 
@@ -20,16 +20,16 @@ describe('Matrix2DFactory', () => {
   describe('buildMatrix2DfromScratch', () => {
 
     it('should build a new cell object that fit in matrix', () => {
-      const position = new PositionRowColumn(1, 1);
+      const position = new Point2D(1, 1);
       const cell = factory.createCellAtPosition(position, new MatrixSizeRowsCols(3, 3));
       expect(cell).toBeInstanceOf(Cell);
-      expect(cell.position).toBe(position);
+      expect(cell.point).toBe(position);
       expect(cell.size).toBeInstanceOf(CellSizeWidthHeight);
       expect(cell.size.width).toBe(10);
       expect(cell.size.height).toBe(10);
       expect(cell.value).toBe('');
-      expect(cell.position.row).toBe(1);
-      expect(cell.position.column).toBe(1);
+      expect(cell.point.y).toBe(1);
+      expect(cell.point.x).toBe(1);
     })
 
 
@@ -62,7 +62,7 @@ describe('Matrix2DFactory', () => {
 
   it('should create a Cell from an HTML element', () => {
     const htmlFactory = new GameBoardHtmlFactory();
-    const htmlCell = htmlFactory.createCellHtmlElement(new PositionRowColumn(1, 2), new CellSizeWidthHeight(100, 200));
+    const htmlCell = htmlFactory.createCellHtmlElement(new Point2D(1, 2), new CellSizeWidthHeight(100, 200));
     const cell = factory.createCellFromHtmlCellElement(htmlCell);
     expect(cell).toBeInstanceOf(Cell);
   });
@@ -71,10 +71,10 @@ describe('Matrix2DFactory', () => {
     // Create an array of mock HTML elements
     const htmlFactory = new GameBoardHtmlFactory();
     const mockElements = [
-      htmlFactory.createCellHtmlElement(new PositionRowColumn(1, 1), new CellSizeWidthHeight(100, 200)),
-      htmlFactory.createCellHtmlElement(new PositionRowColumn(1, 2), new CellSizeWidthHeight(100, 200)),
-      htmlFactory.createCellHtmlElement(new PositionRowColumn(2, 1), new CellSizeWidthHeight(100, 200)),
-      htmlFactory.createCellHtmlElement(new PositionRowColumn(2, 2), new CellSizeWidthHeight(100, 200))
+      htmlFactory.createCellHtmlElement(new Point2D(1, 1), new CellSizeWidthHeight(100, 200)),
+      htmlFactory.createCellHtmlElement(new Point2D(1, 2), new CellSizeWidthHeight(100, 200)),
+      htmlFactory.createCellHtmlElement(new Point2D(2, 1), new CellSizeWidthHeight(100, 200)),
+      htmlFactory.createCellHtmlElement(new Point2D(2, 2), new CellSizeWidthHeight(100, 200))
     ];
 
     // Call the method
@@ -87,11 +87,11 @@ describe('Matrix2DFactory', () => {
   });
 
   // Helper function to validate a Cell object
-  function validateCell(cell:Cell, row:number, col:number, width:number, height:number) {
+  function validateCell(cell:Cell, x:number, y:number, width:number, height:number) {
     expect(cell).toBeInstanceOf(Cell);
-    expect(cell.position).toBeInstanceOf(PositionRowColumn);
-    expect(cell.position.row).toBe(row);
-    expect(cell.position.column).toBe(col);
+    expect(cell.point).toBeInstanceOf(Point2D);
+    expect(cell.point.x).toBe(x);
+    expect(cell.point.y).toBe(y);
     expect(cell.size).toBeInstanceOf(CellSizeWidthHeight);
     expect(cell.size.width).toBe(width);
     expect(cell.size.height).toBe(height);

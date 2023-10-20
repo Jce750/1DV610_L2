@@ -10,7 +10,9 @@
     "./GameBoardHtmlFactory": "./dist/GameBoardHtmlFactory.js",
     "./GameBoardHtmlActions": "./dist/GameBoardHtmlActions.js",
     "./MatrixSizeRowsCols": "./dist/MatrixSizeRowsCols.js",
-    "./CellSizeWidthHeight": "./dist/CellSizeWidthHeight.js"
+    "./CellSizeWidthHeight": "./dist/CellSizeWidthHeight.js",
+    "./IMatrix2DFacade": "./dist/IMatrix2DFacade.js",
+    "./IHtmlGameBoardFacade": "./dist/IHtmlGameBoardFacade.js"
   },
   "main": "./dist/GameBoard.js",
   "scripts": {

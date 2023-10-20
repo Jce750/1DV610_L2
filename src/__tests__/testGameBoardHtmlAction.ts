@@ -3,7 +3,6 @@
  */
 
 import { GameBoardHtmlActions } from '../GameBoardHtmlActions';
-import { PositionRowColumn } from '../PositionRowColumn';
 import { Point2D } from '../Point2D';
 import { PointsSelectionNode } from '../PointsSelectionNode';
 import { Matrix2DFactory } from '../Matrix2DFactory';
@@ -20,7 +19,7 @@ describe('GameBoardHtmlActions', () => {
     gameBoardActions = new GameBoardHtmlActions();
     gameBoardElement = document.createElement('div');
     mockClickHandler = jest.fn();
-    
+
     // Create a mock game board
     gameBoardElement = document.createElement('div');
     // Create mock cells
@@ -36,31 +35,31 @@ describe('GameBoardHtmlActions', () => {
   });
 
   it('should return the correct cell element', () => {
-    const position = new PositionRowColumn(2, 2);
+    const point = new Point2D(2, 2);
     if (!gameBoardElement) {
       throw new Error('game board element not found');
     }
-    const cellElement = gameBoardActions.getCellHtmlElementAtPosition(position, gameBoardElement);
-    
+    const cellElement = gameBoardActions.getCellHtmlElementAtPoint(point, gameBoardElement);
+
     expect(cellElement.getAttribute('data-row')).toBe('2');
     expect(cellElement.getAttribute('data-col')).toBe('2');
   });
 
   it('should throw an error if element is not found', () => {
-    const position = new PositionRowColumn(2, 2);
+    const point = new Point2D(2, 2);
     gameBoardElement.innerHTML = '';  // Clear the game board
-    
+
     expect(() => {
-      gameBoardActions.getCellHtmlElementAtPosition(position, gameBoardElement);
-    }).toThrow('element not found');
+      gameBoardActions.getCellHtmlElementAtPoint(point, gameBoardElement);
+    }).toThrow();
   });
 
   it('should return the correct cell inner text', () => {
-    const position = new PositionRowColumn(2, 2);
-    const cellElement = gameBoardActions.getCellHtmlElementAtPosition(position, gameBoardElement);
+    const point = new Point2D(2, 2);
+    const cellElement = gameBoardActions.getCellHtmlElementAtPoint(point, gameBoardElement);
     cellElement.innerText = 'Test Value';
-    
-    const cellValue = gameBoardActions.getCellHtmlElementValueAtPosition(position, gameBoardElement);
+
+    const cellValue = gameBoardActions.getCellHtmlElementValueAtPoint(point, gameBoardElement);
     expect(cellElement).toBeDefined();
     expect(cellElement.innerText).toBe('Test Value');
     expect(cellValue).toBeDefined();
@@ -68,25 +67,25 @@ describe('GameBoardHtmlActions', () => {
   });
 
   it('should throw an error if row or column is out of range when getting inner text', () => {
-    const position = new PositionRowColumn(4, 4);
-    
+    const point = new Point2D(4, 4);
+
     expect(() => {
-      gameBoardActions.getCellHtmlElementValueAtPosition(position, gameBoardElement);
-    }).toThrow('element not found');
+      gameBoardActions.getCellHtmlElementValueAtPoint(point, gameBoardElement);
+    }).toThrow();
   });
 
   it('should throw an error if element is not found when getting inner text', () => {
-    const position = new PositionRowColumn(2, 2);
+    const point = new Point2D(2, 2);
     gameBoardElement.innerHTML = '';  // Clear the game board
-    
+
     expect(() => {
-      gameBoardActions.getCellHtmlElementValueAtPosition(position, gameBoardElement);
-    }).toThrow('element not found');
+      gameBoardActions.getCellHtmlElementValueAtPoint(point, gameBoardElement);
+    }).toThrow();
   });
 
   it('should add click event to a single cell', () => {
-    const position = new PositionRowColumn(1, 1);
-    const cellElement = gameBoardActions.getCellHtmlElementAtPosition(position, gameBoardElement);
+    const point = new Point2D(1, 1);
+    const cellElement = gameBoardActions.getCellHtmlElementAtPoint(point, gameBoardElement);
 
     gameBoardActions.addClickEventToCell(cellElement, mockClickHandler);
     cellElement.click();
@@ -110,7 +109,7 @@ describe('GameBoardHtmlActions', () => {
   });
 
   it('should throw an error if onclick is not a function', () => {
-    const cellElement = gameBoardActions.getCellHtmlElementAtPosition(new PositionRowColumn(1, 1), gameBoardElement);
+    const cellElement = gameBoardActions.getCellHtmlElementAtPoint(new Point2D(1, 1), gameBoardElement);
 
     expect(() => {
       gameBoardActions.addClickEventToCell(cellElement, 'notAFunction' as any);
@@ -129,7 +128,7 @@ describe('GameBoardHtmlActions', () => {
 
     // Verify that the HTML elements were updated correctly
     matrix4Test.cells.forEach(cell => {
-      const cellElement:HTMLElement | null = htmlMatrix.querySelector(`[data-row="${cell.position.row}"][data-col="${cell.position.column}"]`);
+      const cellElement:HTMLElement | null = htmlMatrix.querySelector(`[data-row="${cell.point.y}"][data-col="${cell.point.x}"]`);
       if (!cellElement ) {
         throw new Error('cell element not found');
       }

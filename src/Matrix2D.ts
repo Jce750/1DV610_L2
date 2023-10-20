@@ -1,7 +1,5 @@
 import { Cell } from "./Cell"
 import { MatrixSizeRowsCols } from "./MatrixSizeRowsCols"
-import { Point2D } from "./Point2D"
-import { ValidatorMatrix } from "./ValidatorMatrix"
 
 /**
  * A class to represent a 2D matrix of cells.

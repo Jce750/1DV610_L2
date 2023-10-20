@@ -17,9 +17,9 @@ export class Matrix2DFactory {
       new RangeMinMax(MagicData.MinRows, MagicData.MaxRows).checkValueInRange(rows)
       new RangeMinMax(MagicData.MinColumns,MagicData.MaxColumns).checkValueInRange(columns)
       let cells:Cell[] = [];
-      for (let row = 1; row <= size.rows; row++) {
-        for (let column = 1; column <= size.columns; column++) {
-          const position = new PositionRowColumn(row, column);
+      for (let x = 1; x <= size.columns; x++) {
+        for (let y = 1; y <= size.rows; y++) {
+          const position = new Point2D(x, y);
           const cell = this.createCellAtPosition(position, size);
           cells.push(cell);
         }
@@ -30,10 +30,10 @@ export class Matrix2DFactory {
     }
   }
 
-  createCellAtPosition(position: PositionRowColumn, matrixSize:MatrixSizeRowsCols): Cell {
-    const point = new Point2D(position.column, position.row);
+  createCellAtPosition(position: Point2D, matrixSize:MatrixSizeRowsCols): Cell {
+    console.log('Create cell at position', position)
     const validator = new ValidatorMatrix()
-    validator.checkPositionExistInMatrix(point, matrixSize);
+    validator.checkPositionExistInMatrix(position, matrixSize);
     const cell = new Cell(position);
     if (!cell) {
       throw new Error('cell not found');
@@ -44,7 +44,8 @@ export class Matrix2DFactory {
   buildMatrix2DFromHtml(gameBoardElement: HTMLElement): Matrix2D {
     const cellNodeList = gameBoardElement.querySelectorAll<HTMLElement>('.cell');
     const cells = this.createCellsFromHtmlCellElements([...cellNodeList] as HTMLElement[]);
-    const size = new MatrixSizeRowsCols(this.getMaxRow(cells), this.getMaxCol(cells));  
+    console.log('ÅÅÅÅÅÅ cells', cells)
+    const size = new MatrixSizeRowsCols(this.getMaxRow(cells), this.getMaxCol(cells));
     const matrix = new Matrix2D(size);
     return new Matrix2D(size, cells);
   }
@@ -59,20 +60,21 @@ export class Matrix2DFactory {
   }
 
   createCellFromHtmlCellElement(cellElement: HTMLElement): Cell {
-    const row = Number(cellElement.getAttribute(MagicData.HtmlCellRow));
-    const column = Number(cellElement.getAttribute(MagicData.HtmlCellColumn));
-    const position = new PositionRowColumn(row, column);
+    const y = Number(cellElement.getAttribute(MagicData.HtmlCellRow));
+    const x = Number(cellElement.getAttribute(MagicData.HtmlCellColumn));
+    const point = new Point2D(x, y);
     const width = Number(cellElement.style.width.replace('px', ''));
     const height = Number(cellElement.style.height.replace('px', ''));
     const cellSize = new CellSizeWidthHeight(width, height);
-    return new Cell(position, cellSize);
+    const value = cellElement.innerText;
+    return new Cell(point, cellSize, value);
   }
 
   private getMaxRow(cells: Cell[]): number {
-    return cells.reduce((maxRow, cell) => Math.max(maxRow, cell.position.row), -1);
+    return cells.reduce((maxRow, cell) => Math.max(maxRow, cell.point.y), -1);
   }
 
   private getMaxCol(cells: Cell[]): number {
-    return cells.reduce((maxCol, cell) => Math.max(maxCol, cell.position.column), -1);
+    return cells.reduce((maxCol, cell) => Math.max(maxCol, cell.point.x), -1);
   }
 }

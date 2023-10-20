@@ -9,7 +9,10 @@ export enum MagicData {
   SemiCircle = 180,
   EightDirections = 360/8,
   Step45 = 45,
-  HtmlCellSelector = '.cell',
+  HtmlDotCellSelector = '.cell',
+  StringCell = 'cell',
+  StringDiv = 'div',
+  StringGameBoard = 'gameboard',
   HtmlCellColumn = 'data-col',
   HtmlCellRow = 'data-row',
 }

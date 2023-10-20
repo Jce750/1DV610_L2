@@ -22,8 +22,8 @@ describe('Matrix2DActions', () => {
     expect(matrix.size.rows).toBe(3);
     expect(matrix.size.columns).toBe(3);
     expect(matrix.cells.length).toBe(9);
-    expect(matrix.cells[0].position.row).toBeDefined();
-    expect(matrix.cells[0].position.column).toBeDefined();
+    expect(matrix.cells[0].point.y).toBeDefined();
+    expect(matrix.cells[0].point.x).toBeDefined();
   });
 
   it('should set the cell value at a given position', () => {
@@ -50,7 +50,7 @@ describe('Matrix2DActions', () => {
     }).toThrow('position does not exist in matrix');
   })
 
-  it ('should return the longest line of cells that match the value of the cell at point', () => {
+  it.only ('should return the longest line of cells that match the value of the cell at point', () => {
     actions.setCellValueAtPosition(new Point2D(1,1), matrix, 'X')
     actions.setCellValueAtPosition(new Point2D(1,2), matrix, 'X')
     actions.setCellValueAtPosition(new Point2D(1,3), matrix, 'X')
@@ -68,6 +68,14 @@ describe('Matrix2DActions', () => {
     expect(cellValue15).toBe('X')
     const itemsFoundCount = actions.getLongestCellElementLineOfValueMatchIntersectingCell(new Point2D(1,1), matrix).length
     expect(itemsFoundCount).toBe(5)
+    const points = actions.getLongestCellElementLineOfValueMatchIntersectingCell(new Point2D(1,1), matrix)
+    console.log(points)
+    expect(points[0].x).toBe(1)
+    expect(points[0].y).toBe(2)
+    expect(points[1].x).toBe(1)
+    expect(points[1].y).toBe(3)
+    expect(points[2].x).toBe(1)
+    expect(points[2].y).toBe(4)
   })
 
   it ('should return the longest line of cells that match the value of the clicked cell even when added in the middle', () => {

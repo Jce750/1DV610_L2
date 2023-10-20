@@ -3,12 +3,10 @@ import {ValidatorNumber} from './ValidatorNumber'
 export class CellSizeWidthHeight {
   #width:number = 20
   #height:number = 20
-  
-  constructor(public pixelWidth:number = 20,public pixelHeight:number = 20) {
-    new ValidatorNumber(pixelWidth).checkPositive().checkFinite().checkInteger()
-    new ValidatorNumber(pixelHeight).checkPositive().checkFinite().checkInteger()
-    this.width = pixelWidth
-    this.height = pixelHeight
+
+  constructor(public _width:number = 20,public _height:number = 20) {
+    this.width = _width
+    this.height = _height
   }
 
   get width():number{

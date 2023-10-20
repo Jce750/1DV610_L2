@@ -1,39 +1,54 @@
 import { CellSizeWidthHeight } from "./CellSizeWidthHeight"
+import { MagicData } from "./MagicData"
 import { MatrixSizeRowsCols } from "./MatrixSizeRowsCols"
-import { PositionRowColumn } from "./PositionRowColumn"
+import { Point2D } from "./Point2D"
 
 export class GameBoardHtmlFactory {
+
+  /**
+   * Creates a game board HTML element with rows and columns.
+   *
+   * @param matrixSize The number of rows and columns in the game board. (1-based)
+   * @param cellSize The width and height in pixels of each cell in the game board.
+   * @returns A game board HTML element.
+   */
   createGameBoardHTML(matrixSize:MatrixSizeRowsCols, cellSize:CellSizeWidthHeight):HTMLElement {
     const {rows} = matrixSize
-    const gameBoardElement = document.createElement('div')
-    gameBoardElement.classList.add('gameboard')
-    for (let row = 1; row <= rows; row++) {
-      gameBoardElement.appendChild(this.#createRowOfHtmlElementCells(row, matrixSize, cellSize))
+    const gameBoardElement = document.createElement(MagicData.StringDiv)
+    gameBoardElement.classList.add(MagicData.StringGameBoard)
+    for (let y = 1; y <= rows; y++) {
+      gameBoardElement.appendChild(this.#createRowOfHtmlElementCells(y, matrixSize, cellSize))
     }
     return gameBoardElement
   }
 
-  createCellHtmlElement(position:PositionRowColumn, cellSize:CellSizeWidthHeight):HTMLElement {
-    return this.#createHtmlElementCell(position, cellSize)
+  /**
+   * Creates a single cell HTML element at a point.
+   *
+   * @param point The point where the cell will be created. (1-based x=column, y=row)
+   * @param cellSize The width and height in pixels of the cell.
+   * @returns A cell HTML element.
+   */
+  createCellHtmlElement(point:Point2D, cellSize:CellSizeWidthHeight):HTMLElement {
+    return this.#createHtmlElementCell(point, cellSize)
   }
 
-  #createRowOfHtmlElementCells (row:number, matrixSize:MatrixSizeRowsCols, cellSize:CellSizeWidthHeight):HTMLElement {
+  #createRowOfHtmlElementCells (y:number, matrixSize:MatrixSizeRowsCols, cellSize:CellSizeWidthHeight):HTMLElement {
     const {columns} = matrixSize
-    const rowElement = document.createElement('div')
-    for (let col = 1; col <= columns; col++) {
-      const htmlCell = this.#createHtmlElementCell(new PositionRowColumn(row,col), cellSize)
+    const rowElement = document.createElement(MagicData.StringDiv)
+    for (let x = 1; x <= columns; x++) {
+      const htmlCell = this.#createHtmlElementCell(new Point2D(x, y), cellSize)
       rowElement.appendChild(htmlCell)
     }
     return rowElement
   }
 
-  #createHtmlElementCell(position:PositionRowColumn, cellSize:CellSizeWidthHeight):HTMLElement {
+  #createHtmlElementCell(point:Point2D, cellSize:CellSizeWidthHeight):HTMLElement {
     const {width, height} = cellSize
-    const {row, column} = position
-    const htmlCell = document.createElement('div')
-    htmlCell.classList.add('cell') // Add a class for styling
-    htmlCell.setAttribute('data-col', column.toString())
-    htmlCell.setAttribute('data-row', row.toString())
+    const htmlCell = document.createElement(MagicData.StringDiv)
+    htmlCell.classList.add(MagicData.StringCell) // Add a class for styling
+    htmlCell.setAttribute(MagicData.HtmlCellColumn, point.x.toString())
+    htmlCell.setAttribute(MagicData.HtmlCellRow, point.y.toString())
     htmlCell.style.width = `${width}px`
     htmlCell.style.height = `${height}px`
     htmlCell.innerText = ""

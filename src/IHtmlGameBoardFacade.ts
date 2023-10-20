@@ -1,11 +1,10 @@
-import { PositionRowColumn } from "./PositionRowColumn";
 import { PointsSelectionComposite } from "./PointsSelectionComposite";
 import { Matrix2D } from "./Matrix2D";
 import { Point2D } from "./Point2D";
 
 export interface IHtmlGameBoardFacade {
   // Get the value of html element at a row and column
-  getCellHtmlElementValueAtPosition(position:PositionRowColumn, gameBoardElement:HTMLElement):String
+  getCellHtmlElementValueAtPoint(point:Point2D, gameBoardElement:HTMLElement):String
 
   // Add click event to a single cell
   addClickEventToCell(cellElement:HTMLElement, onclick: ((event: MouseEvent) => void)):void
@@ -22,4 +21,5 @@ export interface IHtmlGameBoardFacade {
   // Look for the longest line of matching values intersecting the current cell and return the html elements
   // Search along the horisontal, vertical and diagonal lines of the game board
   getLongestCellHtmlElementLineOfValueMatchIntersectingPoint(currentCell:Point2D, matrix:Matrix2D, htmlMatrix:HTMLElement):HTMLElement[]
+
 }

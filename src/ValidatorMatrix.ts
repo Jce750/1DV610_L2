@@ -9,4 +9,16 @@ export class ValidatorMatrix {
     }
     return this
   }
+
+  isPositionInMatrixBoundaries(position:Point2D, size:MatrixSizeRowsCols):boolean{
+    return position.y >= 1 && position.y <= size.rows &&
+      position.x >= 1 && position.x <= size.columns
+  }
+
+  checkArrayIsNotEmpty(array:any[]){
+    if(array.length === 0){
+      throw new Error('array is empty')
+    }
+    return this
+  }
 }
