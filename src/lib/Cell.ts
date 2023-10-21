@@ -26,6 +26,16 @@ export class Cell {
     return this.#value;
   }
 
+  set point(point: Point2D) {
+    new ValidatorNumber(point.x).checkPositive().checkFinite().checkInteger();
+    new ValidatorNumber(point.y).checkPositive().checkFinite().checkInteger();
+    this.#point = point;
+  }
+
+  set size(size: CellSizeWidthHeight) {
+    this.#size = size;
+  }
+
   set value(value: string) {
     if (value != '') {
       new ValidatorMatrix().checkSingleLetter(value);
@@ -33,15 +43,9 @@ export class Cell {
     this.#value = value;
   }
 
-  set size(size: CellSizeWidthHeight) {
-    this.#size = size;
-  }
 
-  set point(point: Point2D) {
-    new ValidatorNumber(point.x).checkPositive().checkFinite().checkInteger();
-    new ValidatorNumber(point.y).checkPositive().checkFinite().checkInteger();
-    this.#point = point;
-  }
+
+
 
   clone(): Cell {
     return new Cell(this.point.clone(), this.size.clone(), this.value);

@@ -23,6 +23,9 @@ export class ValidatorMatrix {
   }
 
   checkSingleLetter(value:string) {
+    if (!value.match(/[a-z]/i)) {
+        throw new Error(`Value must be a letter, but was ${value}`);
+    }
     if (value.length !== 1) {
         throw new Error(`Value must be a single letter, but was ${value}`);
     }

@@ -47,7 +47,6 @@ export class Matrix2DFactory {
       throw new Error('gameBoardElement does not have .cell elements');
     }
     const cells = this.createCellsFromHtmlCellElements([...cellNodeList] as HTMLElement[]);
-    console.log('ÅÅÅÅÅÅ cells', cells)
     const size = new MatrixSizeRowsCols(this.getMaxRow(cells), this.getMaxCol(cells));
     const matrix = new Matrix2D(size);
     return new Matrix2D(size, cells);

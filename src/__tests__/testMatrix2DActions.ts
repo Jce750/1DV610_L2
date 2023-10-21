@@ -50,7 +50,7 @@ describe('Matrix2DActions', () => {
     }).toThrow('position does not exist in matrix');
   })
 
-  it.only ('should return the longest line of cells that match the value of the cell at point', () => {
+  it ('should return the longest line of cells that match the value of the cell at point', () => {
     actions.setCellValueAtPosition(new Point2D(1,1), matrix, 'X')
     actions.setCellValueAtPosition(new Point2D(1,2), matrix, 'X')
     actions.setCellValueAtPosition(new Point2D(1,3), matrix, 'X')

@@ -1,5 +1,3 @@
-
-// All my magic numbers
 export enum MagicData {
   MinRows = 1,
   MinColumns = 1,

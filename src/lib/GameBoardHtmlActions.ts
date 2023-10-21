@@ -8,14 +8,10 @@ import { Matrix2DActions } from "./Matrix2DActions"
 import { PointsSelectionNode } from "./PointsSelectionNode"
 import { Cell } from "./Cell"
 import { ValidatorMatrix } from "./ValidatorMatrix"
+import { IMatrix2DFacade } from "../IMatrix2DFacade"
 
 export class GameBoardHtmlActions {
 
-  /**
-  * Returns a single HTMLelement representation of a cell at a point (coordinate).
-  * 1-based indexing is used for points.
-  *
-  */
   getCellHtmlElementAtPoint(point:Point2D, gameBoardElement:HTMLElement): HTMLElement {
     const allCellElements = this.#queryAllCellHtmlElements(gameBoardElement);
     const foundElement = Array.from(allCellElements).find(cell => this.#isMatchingCell(cell, point));
@@ -26,22 +22,11 @@ export class GameBoardHtmlActions {
     }
   }
 
-  /**
-  * Return the html inner text value of a cell at a row and column.
-  * 1-based indexing is used for rows and columns.
-  *
-  */
   getCellHtmlElementValueAtPoint(point:Point2D, gameBoardElement:HTMLElement):string{
     return this.getCellHtmlElementAtPoint(point, gameBoardElement).innerText
   }
 
-  /**
-   * Add a click event to all cells in the selection of the html gameboard.
-   *
-   * @param selection group of points
-   * @param onclick ref to event handler method
-   * @param gameBoardHtmlElement the html gameboard element
-   */
+
   addClickEventToHtmlElementCells(selection:PointsSelectionComposite, onclick: ((event: MouseEvent) => void), gameBoardHtmlElement:HTMLElement):void {
     selection.forEach((point:Point2D) => {
       const cellElement = this.getCellHtmlElementAtPoint(point, gameBoardHtmlElement)
@@ -49,12 +34,6 @@ export class GameBoardHtmlActions {
     })
   }
 
-  /**
-   * Add a click event to a single cell.
-   *
-   * @param cellElement the html cell element
-   * @param onclick ref to event handler method
-   */
   addClickEventToCell(cellElement:HTMLElement, onclick: ((event: MouseEvent) => void)):void {
     if (typeof onclick !== 'function') {
       throw new Error('onclick must be a function')
@@ -62,12 +41,6 @@ export class GameBoardHtmlActions {
     cellElement.addEventListener('click', onclick)
   }
 
-  /**
-   * Create a selection of points containing all the points in the html gameboard.
-   *
-   * @param gameBoardHtmlElement the html gameboard element
-   * @returns a selection of points
-   */
   selectAllCellsPointsInHtmlElement(gameBoardHtmlElement:HTMLElement):PointsSelectionComposite {
     if (!gameBoardHtmlElement) {
       throw new Error('gameBoardHtmlElement is not defined')
@@ -75,12 +48,12 @@ export class GameBoardHtmlActions {
     const selection = new PointsSelectionNode(0,0)
     const {rows, columns} = this.#getGameBoardElementRowsColumns(gameBoardHtmlElement)
     for (let row = 1; row <= rows; row++) {
-      for (let column = 1; column <= columns; column++) {
-        selection.add(new Point2D(column, row))
-      }
+      this.#addPointsForRow(gameBoardHtmlElement, row, selection)
     }
     return selection
   }
+
+
 
   /**
   * To be implemented
@@ -89,10 +62,7 @@ export class GameBoardHtmlActions {
     throw new Error('Not implemented')
   }
 
-  /**
-   * Update the html matrix with the values from the matrix.
-   *
-   */
+
   updateHtmlMatrixByMatrix(matrix:Matrix2D, htmlMatrix:HTMLElement):void {
     matrix.cells.forEach(cell => {
       const cellElement = this.getCellHtmlElementAtPoint(cell.point, htmlMatrix)
@@ -107,7 +77,10 @@ export class GameBoardHtmlActions {
     })
   }
 
-
+  getGameBoardSize(gameBoardHtmlElement:HTMLElement):{rows:number, columns:number} {
+    const matrix = new IMatrix2DFacade().buildMatrixFromGameBoardHtmlElement(gameBoardHtmlElement)
+    return {rows:matrix.size.rows, columns:matrix.size.columns}
+  }
 
   getLongestCellHtmlElementLineOfValueMatchIntersectingPoint(currentCell:Point2D, matrix:Matrix2D ,htmlMatrix:HTMLElement):HTMLElement[] {
     this.updateMatrixByHtmlMatrix(matrix, htmlMatrix)
@@ -149,6 +122,13 @@ export class GameBoardHtmlActions {
     const uniqueRows = this.#getUniqueAttributes(cells, MagicData.HtmlCellRow)
     const uniqueColumns = this.#getUniqueAttributes(cells, MagicData.HtmlCellColumn)
     return new MatrixSizeRowsCols(uniqueRows.size,uniqueColumns.size)
+  }
+
+  #addPointsForRow(gameBoardHtmlElement:HTMLElement, row:number, selection:PointsSelectionNode):void {
+    const {columns} = this.#getGameBoardElementRowsColumns(gameBoardHtmlElement)
+    for (let column = 1; column <= columns; column++) {
+      selection.add(new Point2D(column, row))
+    }
   }
 
   #getAllHtmlElementCellsAsArray(gameBoardElement:HTMLElement):HTMLElement[]{

@@ -18,7 +18,8 @@
   "main": "./dist/GameBoard.js",
   "scripts": {
     "start": "tsc && node dist/GameBoard.js",
-    "test": "jest"
+    "test": "jest",
+    "dev": "npx tsc --watch"
   },
   "keywords": [],
   "author": "",
