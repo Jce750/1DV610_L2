@@ -8,8 +8,8 @@
 
       const tabort = this.#gameBoardLibrary.createMatrixByRowsColumns({ rows: this.#sideSize, columns: this.#sideSize })
       tabort.cells[0].width = 100
-      console.log('FFFFFFF', tabort)
-      console.log('FFFFFFF', tabort.cells[0].width) // 100
+      console.log('test matrix: ', tabort)
+      console.log('test update cell width: ', tabort.cells[0].width) // 100
 
       to the #createGameBoard () method in the demo app.
       the result should be
@@ -26,11 +26,7 @@
 
   Test 1-6 passed the tested.
 
-  ## Automatic tests
-
-# Test Report Table
-
-## Test Results
+## Automatic tests
 
 | Test File                    | Test Description                                         | Test Outcome | Execution Time |
 |------------------------------|----------------------------------------------------------|--------------|----------------|
