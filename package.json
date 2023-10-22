@@ -4,13 +4,6 @@
   "description": "Analyse a matrix",
   "type": "module",
   "exports": {
-    "./PositionRowColumn": "./dist/PositionRowColumn.js",
-    "./Matrix2DFactory": "./dist/Matrix2DFactory.js",
-    "./Matrix2DActions": "./dist/Matrix2DActions.js",
-    "./GameBoardHtmlFactory": "./dist/GameBoardHtmlFactory.js",
-    "./GameBoardHtmlActions": "./dist/GameBoardHtmlActions.js",
-    "./MatrixSizeRowsCols": "./dist/MatrixSizeRowsCols.js",
-    "./CellSizeWidthHeight": "./dist/CellSizeWidthHeight.js",
     "./IMatrix2DFacade": "./dist/IMatrix2DFacade.js",
     "./IHtmlGameBoardFacade": "./dist/IHtmlGameBoardFacade.js",
     "./Point2D": "./dist/Point2D.js"

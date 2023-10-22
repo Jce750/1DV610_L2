@@ -4,7 +4,6 @@ import { MagicData } from "./MagicData";
 import { Matrix2D } from "./Matrix2D";
 import { MatrixSizeRowsCols } from "./MatrixSizeRowsCols";
 import { Point2D } from "./Point2D";
-import { PositionRowColumn } from "./PositionRowColumn";
 import { RangeMinMax } from "./RangeMinMax";
 import { ValidatorMatrix } from "./ValidatorMatrix";
 
