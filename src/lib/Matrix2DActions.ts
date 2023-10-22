@@ -45,7 +45,6 @@ export class Matrix2DActions {
   public getLongestCellElementLineOfValueMatchIntersectingCells(currentCell:Point2D, matrix:Matrix2D):Point2D[]{
     const matrixAnalyser = new MatrixAnalyzer(matrix)
     const longest = matrixAnalyser.getLongestMatchingLineOfIntersectingCells(currentCell)
-    console.log('longest in Matrix2Daction', longest)
     return longest
   }
 
@@ -63,7 +62,6 @@ export class Matrix2DActions {
     do {
       if(matrix.cells[index].point.x == point.x && matrix.cells[index].point.y == point.y){
         matrix.cells[index].value = value
-        console.log('cell value set at position', point)
         return
       }
       index++

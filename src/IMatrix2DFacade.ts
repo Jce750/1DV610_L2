@@ -24,13 +24,13 @@ export class IMatrix2DFacade {
   }
 
   /**
-   * Get all aligned elements intersecting the the cell at point having the same value.
+   * Get all aligned points intersecting the specified point and having the same value.
    * Can typically be used to get the winning line in a game of tic-tac-toe.
    *
-   * @param gameBoardHtmlElement the html gameboard element
+   * @param matrix the html gameboard element
    * @returns a selection of points
    */
-  getLongestCellElementLineOfValueMatchIntersectingCell(currentCell:Point2D, matrix:Matrix2D):Point2D[] {
+  getLongestPointsLineOfValueMatchIntersectingPoint(currentCell:Point2D, matrix:Matrix2D):Point2D[] {
     return new Matrix2DActions().getLongestCellElementLineOfValueMatchIntersectingCells(currentCell, matrix)
   }
 

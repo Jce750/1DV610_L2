@@ -5,8 +5,7 @@
   "type": "module",
   "exports": {
     "./IMatrix2DFacade": "./dist/IMatrix2DFacade.js",
-    "./IHtmlGameBoardFacade": "./dist/IHtmlGameBoardFacade.js",
-    "./Point2D": "./dist/Point2D.js"
+    "./IHtmlGameBoardFacade": "./dist/IHtmlGameBoardFacade.js"
   },
   "main": "./dist/GameBoard.js",
   "scripts": {

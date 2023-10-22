@@ -28,9 +28,6 @@ describe('Matrix2DActions', () => {
 
   it('should set the cell value at a given position', () => {
     const position = new Point2D(1, 1);
-    console.log(position)
-    console.log(matrix.cells.length)
-    console.log(actions)
     const value = 'X';
     actions.setCellValueAtPosition(position, matrix, value);
     const cellValue = actions.getCellValueAtPosition(position, matrix);
@@ -69,7 +66,6 @@ describe('Matrix2DActions', () => {
     const itemsFoundCount = actions.getLongestCellElementLineOfValueMatchIntersectingCells(new Point2D(1,1), matrix).length
     expect(itemsFoundCount).toBe(5)
     const points = actions.getLongestCellElementLineOfValueMatchIntersectingCells(new Point2D(1,1), matrix)
-    console.log(points)
     expect(points[0].x).toBe(1)
     expect(points[0].y).toBe(2)
     expect(points[1].x).toBe(1)

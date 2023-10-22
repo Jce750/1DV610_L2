@@ -3,6 +3,8 @@ export enum MagicData {
   MinColumns = 1,
   MaxRows = 20,
   MaxColumns = 20,
+  DefaultCellSize = 50,
+  DefaultRowsColumnsCount = 5,
   FullCircle = 360,
   SemiCircle = 180,
   EightDirections = 360/8,

@@ -1,10 +1,11 @@
+import { MagicData } from './MagicData'
 import {ValidatorNumber} from './ValidatorNumber'
 
 export class CellSizeWidthHeight {
-  #width:number = 20
-  #height:number = 20
+  #width:number = MagicData.DefaultCellSize
+  #height:number = MagicData.DefaultCellSize
 
-  constructor(public _width:number = 20,public _height:number = 20) {
+  constructor(public _width:number = MagicData.DefaultCellSize ,public _height:number = MagicData.DefaultCellSize) {
     this.width = _width
     this.height = _height
   }

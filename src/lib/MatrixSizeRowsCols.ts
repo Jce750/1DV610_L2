@@ -1,10 +1,11 @@
+import { MagicData } from "./MagicData"
 import { ValidatorNumber } from "./ValidatorNumber"
 
 export class MatrixSizeRowsCols {
-  #rows:number = 5
-  #columns:number = 5
+  #rows:number = MagicData.DefaultRowsColumnsCount
+  #columns:number = MagicData.DefaultRowsColumnsCount
 
-  constructor(rows:number = 5, columns:number = 5){
+  constructor(rows:number = MagicData.DefaultRowsColumnsCount, columns:number = MagicData.DefaultRowsColumnsCount){
     this.rows = rows
     this.columns = columns
   }

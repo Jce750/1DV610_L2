@@ -30,7 +30,6 @@ export class Matrix2DFactory {
   }
 
   createCellAtPosition(position: Point2D, matrixSize:MatrixSizeRowsCols): Cell {
-    console.log('Create cell at position', position)
     const validator = new ValidatorMatrix()
     validator.checkPositionExistInMatrix(position, matrixSize);
     const cell = new Cell(position);

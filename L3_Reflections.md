@@ -7,7 +7,7 @@ Remove dependency on Html from core functionalities.
 Remove magic data embedded in the code.
 Standardize coordinates using x, y (although short they are good). Instead of row, Column.
 Add ability to work with selection of points.
-Add facade.
+Add facade. - (I tried to add "real" interfaces but it did not work with javascript in the app which is the background to the weird looking Matrix2DActions).
 Add Wrapper to the app.
 Experiment with structures over objects.
 Experiment with stateless usability.
@@ -164,12 +164,11 @@ __Team Rules__
 ## Chapter 6: Objects and Data Structures
 
 __Data Abstraction__  
-My initial idea was to let the html parts be public but keep the Matrix cells private.
-Only send coordinates(point), value or copy outside. But I am sending the whole matrix to anyone interested. This is one big flaw that I would like to fix. Not sure time will let me at this point.
-A fools defence could perhaps be that the library can be used as a stateless service and thus it does not matter if it is public!
+My initial intention was to make the html parts public but keep the Matrix cells private. The interface was only supposed to return coordinates(point), values or copies outside.
+However the Matrix2D was made public. Although the attributes of the matrix are readonly the individual cells are available through getters and setters. Is it ok to keep it this way? Is it up to the user to hide the matrix they use?
+In the demo app I only use the html parts so the problem doesn't show there.
 
 __Data/Object Anti-Symmetry__  
- Classes hide themselves by exposing methods but not data, whereas data structures expose data but have no meaningful methods.
  I find it hard to know where to draw the line - what is a datastructures and what is an object. I feel comfortable with the Point class being a data-structure. I suppose I feel sure because it is an immutable value type. But my cell class puzzles me. It feels a lot like a data-carrier. However the setters don't allow direct access to the data. The same earie feeling creep upon me for MatrixSizeRowsCols and CellSizeWidthHeight. They seem to be data-structures but not pure such. What if they are awkward hybrids. Ugly creatures luring in the shadows ready to smudge my intensions to present clean code. I suppose I should have moved the validation to the users and made the data immutable and simply replace instances upon update.
  The real freak is the 2DMatrix class. Just to challenge this chapter i made it a data-structure. Its functionality is placed in analyzer, action and factory. Feeling like Bambi on ice I would very much like a comment on this.
 
@@ -199,7 +198,7 @@ __Adapter Pattern__
 ## Chapter 9: Unit Tests
 
 __Three Laws of TDD (Test-Driven Development)__  
-It is one of those principles that give you adult points. Keep disciplined and do only as much needed to solve the problem. Take your lean requirement. Write a failing test. Write the exact code to satisfy the test. Prettyfy the code. Do not overengineer things. I scored zero. My approach was to add a lot of fun stuff to the library. Neglect the time limitation aspect and naivly hope that I could manage to implement a tetris a picture analyzer and battleship application. Putting myself on the edge with code being so red that you could hear Jingle Bells ringing in your ears. Then build tests and start debugging and refactoring all at once. Yes, I know it is bad!
+It is one of those principles that give you adult points. Keep disciplined and do only as much needed to solve the problem. Take your lean requirement. Write a failing test. Write the exact code to satisfy the test. Prettify the code. Do not over engineer things. I scored zero. My approach was to add a lot of fun stuff to the library. Neglect the time limitation aspect and in a naiv manner hope that I could manage to implement a tetris a picture analyzer and battleship application. Putting myself on the edge with code being so red that you could hear Jingle Bells ringing in your ears. Then build tests and start debugging and refactoring all at once. Yes, I know it is bad!
 __Fast Tests__  
 Once my tests are there I love them and I run them a lot. I guess the speed issue is beyond the scoop of my simple app.
 __Independent Tests__  
