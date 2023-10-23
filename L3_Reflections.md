@@ -2,16 +2,16 @@
 
 ## L2->L3 short
 
-Break down the complicated MatrixAnalyzer to make it easier to understand.
-Remove dependency on Html from core functionalities.
-Remove magic data embedded in the code.
-Standardize coordinates using x, y (although short they are good). Instead of row, Column.
-Add ability to work with selection of points.
-Add facade. - (I tried to add "real" interfaces but it did not work with javascript in the app which is the background to the weird looking Matrix2DActions).
-Add Wrapper to the app.
-Experiment with structures over objects.
-Experiment with stateless usability.
-Adhere to Clean Code principles. GPT 4 generated a structure for chapter 2-11 from Clean Code and I have commented. See below.
+- Break down the complicated MatrixAnalyzer to make it easier to understand.
+- Remove dependency on Html from core functionalities.
+- Remove magic data embedded in the code.
+- Standardize coordinates using x, y (although short they are good). Instead of row, Column.
+- Add ability to work with selection of points.
+- Add facade. - (I tried to add "real" interfaces but it did not work with javascript in the app which is the background to the - weird looking Matrix2DActions).
+- Add Wrapper to the app.
+- Experiment with structures over objects.
+- Experiment with stateless usability.
+- Adhere to Clean Code principles. GPT 4 generated a structure for chapter 2-11 from Clean Code and I have commented. See below.
 
 ## Chapter 2: Meaningful Names
 
@@ -24,7 +24,7 @@ __Make Meaningful Distinctions__
  I used to have a CellPositionRowColumn class and then I invented a Point2D class. I decided to try using these side by side to keep cell being one unit and a point another. That costed me many hours. Why? Well I could not keep track of x=column and y=row. A point is a (x(column),y(row)) and a cell is a (row(y), column(x)). It is a school book example. If you have inch and cm in the same system an accident is bound to happen!
 
 __Use Pronounceable Names__  
-I can offer a tonguetwister. If I sound proud - I am not.
+I can offer a tongue twister. If I sound proud - I am not.
 getLongestCellElementLineOfValueMatchIntersectingCell
 getLongestCellHtmlElementLineOfValueMatchIntersectingPoint
 getLongestCellElementLineOfValueMatchIntersectingCells
